@@ -6,10 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.erendogan6.dotoday.R
+import com.erendogan6.dotoday.databinding.FragmentMainBinding
+import com.erendogan6.dotoday.databinding.FragmentSaveBinding
 
 class SaveFragment : Fragment() {
+    private lateinit var binding: FragmentSaveBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_save, container, false)
+        binding = FragmentSaveBinding.inflate(layoutInflater,container,false)
+        return binding.root
     }
 
 }

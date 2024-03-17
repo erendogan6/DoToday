@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.erendogan6.dotoday.R
+import com.erendogan6.dotoday.databinding.FragmentUpdateBinding
 
 
 class UpdateFragment : Fragment() {
-
+    private lateinit var binding: FragmentUpdateBinding
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_update, container, false)
+        binding = FragmentUpdateBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
 }
