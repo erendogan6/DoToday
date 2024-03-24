@@ -7,20 +7,17 @@ plugins {
 android {
     namespace = "com.erendogan6.dotoday"
     compileSdk = 34
-
     defaultConfig {
         applicationId = "com.erendogan6.dotoday"
         minSdk = 27
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
     buildFeatures{
         viewBinding = true
     }
-
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -38,9 +35,9 @@ android {
         jvmTarget = "1.8"
     }
 }
-
 dependencies {
-
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.activity.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
