@@ -29,6 +29,6 @@
         tools:layout="@layout/fragment_update" >
         <argument
             android:name="ToDo"
-            app:argType="com.erendogan6.dotoday.data.ToDo" />
+            app:argType="com.erendogan6.dotoday.data.entity.ToDo" />
     </fragment>
 </navigation>
