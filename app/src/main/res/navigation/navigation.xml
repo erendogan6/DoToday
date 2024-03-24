@@ -21,7 +21,11 @@
         android:id="@+id/saveFragment"
         android:name="com.erendogan6.dotoday.ui.fragment.SaveFragment"
         android:label="fragment_save"
-        tools:layout="@layout/fragment_save" />
+        tools:layout="@layout/fragment_save" >
+        <action
+            android:id="@+id/action_saveFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
     <fragment
         android:id="@+id/updateFragment"
         android:name="com.erendogan6.dotoday.ui.fragment.UpdateFragment"
@@ -30,5 +34,8 @@
         <argument
             android:name="ToDo"
             app:argType="com.erendogan6.dotoday.data.entity.ToDo" />
+        <action
+            android:id="@+id/action_updateFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
     </fragment>
 </navigation>

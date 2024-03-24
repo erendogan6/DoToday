@@ -21,7 +21,7 @@ class ToDoAdapter(private val dataSet: ArrayList<ToDo>,
         holder.binding.deleteIcon.setOnClickListener {
             onDeleteClicked(position)
         }
-        holder.binding.textView.setOnClickListener {
+        holder.binding.root.setOnClickListener {
             onItemClicked(position)
         }
     }

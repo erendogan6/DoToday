@@ -11,9 +11,10 @@ import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erendogan6.dotoday.R
 import com.erendogan6.dotoday.data.entity.ToDo
-import com.erendogan6.dotoday.ui.fragment.adaptor.ToDoAdapter
 import com.erendogan6.dotoday.databinding.FragmentMainBinding
+import com.erendogan6.dotoday.ui.fragment.adaptor.ToDoAdapter
 import com.erendogan6.dotoday.ui.fragment.viewmodel.MainViewModel
+import com.erendogan6.dotoday.utils.transition
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -21,11 +22,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var viewmodel : MainViewModel
+    private lateinit var adapter: ToDoAdapter
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMainBinding.inflate(layoutInflater,container,false)
 
         binding.floatButton.setOnClickListener {
-            Navigation.findNavController(it).navigate(R.id.action_mainFragment_to_saveFragment)
+            Navigation.transition(requireView(),R.id.action_mainFragment_to_saveFragment)
         }
 
         binding.search.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
@@ -39,41 +41,60 @@ class MainFragment : Fragment() {
 
         })
 
-        val toDoList = ArrayList<ToDo>()
-        var todo1 = ToDo(0,"Spor","Antrenman",false,1L)
-        var todo2 = ToDo(0,"Ders","Antrenman",false,1L)
-        var todo3 = ToDo(0,"Alışveriş","Antrenman",false,1L)
+        viewmodel.toDoList.observe(viewLifecycleOwner){
+            val ToDoList = ArrayList<ToDo>(it)
+            adapter = ToDoAdapter(ToDoList,
+                onDeleteClicked = { position ->
+                    val todoItem = ToDoList[position]
+                    Snackbar.make(binding.root, "Do You Want to Delete ${todoItem.title}?", Snackbar.LENGTH_LONG)
+                        .setAction("Yes") {
+                            delete(todoItem.id)
+                            ToDoList.removeAt(position)
+                            adapter.notifyItemRemoved(position)
+                            adapter.notifyDataSetChanged()
+                        }.show()
+                },
+                onItemClicked = { position ->
+                    val todoItem = ToDoList[position]
+                    val action = MainFragmentDirections.actionMainFragmentToUpdateFragment(todoItem)
+                    Navigation.transition(requireView(),action)
+                }
+            )
+            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            binding.recyclerView.adapter = adapter
+        }
 
-        toDoList.add(todo1)
-        toDoList.add(todo2)
-        toDoList.add(todo3)
-
-        val adapter = ToDoAdapter(toDoList,
-            onDeleteClicked = { position ->
-                val todoItem = toDoList[position]
-                Snackbar.make(binding.root, "Do You Want to Delete ${todoItem.title}?", Snackbar.LENGTH_LONG)
-                    .setAction("Yes") {
-                        toDoList.removeAt(position)
-                    }.show()
-            },
-            onItemClicked = { position ->
-                val todoItem = toDoList[position]
-                val action = MainFragmentDirections.actionMainFragmentToUpdateFragment(todoItem)
-                Navigation.findNavController(requireView()).navigate(action)
+        binding.search.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null) {
+                    viewmodel.search(query)
+                }
+                return true
             }
-        )
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        binding.recyclerView.adapter = adapter
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
 
 
         return binding.root
+    }
+
+    fun delete(id: Int){
+        viewmodel.delete(id)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val tempViewModel: MainViewModel by viewModels()
         viewmodel = tempViewModel
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewmodel.loadToDos()
     }
 
 }
