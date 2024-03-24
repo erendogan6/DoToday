@@ -6,14 +6,14 @@ import javax.inject.Inject
 
 class DoTodayRepository @Inject constructor(
     private val dataSource: DoTodayDataSource) {
-    suspend fun save(name:String) = dataSource.save(name)
+    suspend fun save(toDo: ToDo) = dataSource.save(toDo)
 
-    suspend fun update(id:Int,name: String) = dataSource.update(id,name)
+    suspend fun update(toDo: ToDo) = dataSource.update(toDo)
 
-    suspend fun delete(id:Int) = dataSource.delete(id)
+    suspend fun delete(toDo: ToDo) = dataSource.delete(toDo)
 
-    suspend fun loadToDos() : ArrayList<ToDo> = dataSource.loadToDos()
+    suspend fun loadToDos() : List<ToDo> = dataSource.loadToDos()
 
-    suspend fun search(searchText:String): ArrayList<ToDo> = dataSource.search(searchText)
+    suspend fun search(searchText:String): List<ToDo> = dataSource.search(searchText)
 
 }

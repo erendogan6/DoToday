@@ -29,7 +29,8 @@ class UpdateFragment : Fragment() {
         binding.editTextName.setText(toDo.title)
         binding.buttonUpdate.setOnClickListener {
             val name = binding.editTextName.text.toString()
-            viewmodel.update(toDo.id,name)
+            toDo.title = name
+            viewmodel.update(toDo)
             Navigation.transition(requireView(),R.id.action_updateFragment_to_mainFragment)
         }
         super.onViewCreated(view, savedInstanceState)

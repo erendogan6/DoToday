@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import com.erendogan6.dotoday.R
+import com.erendogan6.dotoday.data.entity.ToDo
 import com.erendogan6.dotoday.databinding.FragmentSaveBinding
 import com.erendogan6.dotoday.ui.fragment.viewmodel.SaveViewModel
 import com.erendogan6.dotoday.utils.transition
@@ -20,7 +21,14 @@ class SaveFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentSaveBinding.inflate(layoutInflater,container,false)
         binding.buttonSave.setOnClickListener {
-            viewmodel.save(binding.editTextName.text.toString())
+            val newToDo = ToDo(
+                id = 0,
+                title = binding.editTextName.text.toString(),
+                description = "Yeni görevin detayları",
+                isCompleted = false,
+                dueDate = 0L
+            )
+            viewmodel.save(newToDo)
             Navigation.transition(requireView(),R.id.action_saveFragment_to_mainFragment)
         }
         return binding.root

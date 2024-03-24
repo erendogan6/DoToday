@@ -13,15 +13,15 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
-    var toDoList = MutableLiveData<ArrayList<ToDo>>()
+    var toDoList = MutableLiveData<List<ToDo>>()
 
     init {
         loadToDos()
     }
 
-    fun delete(id:Int){
+    fun delete(toDo: ToDo){
         CoroutineScope(Dispatchers.Main).launch {
-            repo.delete(id)
+            repo.delete(toDo)
             loadToDos()
         }
     }

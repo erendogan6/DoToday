@@ -1,6 +1,7 @@
 package com.erendogan6.dotoday.ui.fragment.viewmodel
 
 import androidx.lifecycle.ViewModel
+import com.erendogan6.dotoday.data.entity.ToDo
 import com.erendogan6.dotoday.data.repo.DoTodayRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -10,9 +11,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SaveViewModel @Inject constructor(var repo: DoTodayRepository): ViewModel()  {
-    fun save(name:String){
+    fun save(toDo: ToDo){
         CoroutineScope(Dispatchers.Main).launch {
-            repo.save(name)
+            repo.save(toDo)
         }
     }
 

@@ -48,7 +48,7 @@ class MainFragment : Fragment() {
                     val todoItem = ToDoList[position]
                     Snackbar.make(binding.root, "Do You Want to Delete ${todoItem.title}?", Snackbar.LENGTH_LONG)
                         .setAction("Yes") {
-                            delete(todoItem.id)
+                            delete(todoItem)
                             ToDoList.removeAt(position)
                             adapter.notifyItemRemoved(position)
                             adapter.notifyDataSetChanged()
@@ -82,8 +82,8 @@ class MainFragment : Fragment() {
         return binding.root
     }
 
-    fun delete(id: Int){
-        viewmodel.delete(id)
+    fun delete(toDo: ToDo){
+        viewmodel.delete(toDo)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
