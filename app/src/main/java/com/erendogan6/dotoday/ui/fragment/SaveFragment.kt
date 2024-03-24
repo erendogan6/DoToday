@@ -11,7 +11,10 @@ import com.erendogan6.dotoday.databinding.FragmentMainBinding
 import com.erendogan6.dotoday.databinding.FragmentSaveBinding
 import com.erendogan6.dotoday.ui.fragment.viewmodel.MainViewModel
 import com.erendogan6.dotoday.ui.fragment.viewmodel.SaveViewModel
+import com.erendogan6.dotoday.utils.transition
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SaveFragment : Fragment() {
     private lateinit var binding: FragmentSaveBinding
     private lateinit var viewmodel : SaveViewModel

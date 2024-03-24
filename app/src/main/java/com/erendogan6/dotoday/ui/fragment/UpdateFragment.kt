@@ -11,9 +11,10 @@ import com.erendogan6.dotoday.R
 import com.erendogan6.dotoday.databinding.FragmentUpdateBinding
 import com.erendogan6.dotoday.ui.fragment.viewmodel.MainViewModel
 import com.erendogan6.dotoday.ui.fragment.viewmodel.UpdateViewModel
-import java.io.Serializable
+import com.erendogan6.dotoday.utils.transition
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class UpdateFragment : Fragment() {
     private lateinit var binding: FragmentUpdateBinding
     private lateinit var viewmodel : UpdateViewModel

@@ -5,11 +5,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath ("androidx.navigation:navigation-safe-args-gradle-plugin:2.7.7") // Sürüm numarası projenizin kullanımına bağlı olarak değişebilir
+        classpath (libs.androidx.navigation.safe.args.gradle.plugin)
     }
 }
 
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    id("com.google.dagger.hilt.android") version "2.51" apply false
 }

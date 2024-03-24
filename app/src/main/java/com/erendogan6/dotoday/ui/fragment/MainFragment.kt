@@ -15,7 +15,9 @@ import com.erendogan6.dotoday.ui.fragment.adaptor.ToDoAdapter
 import com.erendogan6.dotoday.databinding.FragmentMainBinding
 import com.erendogan6.dotoday.ui.fragment.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
     private lateinit var viewmodel : MainViewModel
