@@ -6,29 +6,52 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.MainFragment">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/updateToolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/mainColor"
-        android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
+
+    <RelativeLayout
+        android:id="@+id/frame_2"
+        android:layout_width="373dp"
+        android:layout_height="61dp"
+        android:layout_margin="15dp"
+        android:background="@drawable/search"
+        android:elevation="2dp"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
+        <EditText
+            android:id="@+id/searchText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="20dp"
+            android:background="@android:color/transparent"
+            android:hint="@string/search_to_do"
+            android:inputType="text"
+            android:textSize="14sp" />
+
+        <ImageView
+            android:id="@+id/searchIcon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:fontFamily="@font/im_fell_double_pica"
-            android:text="DoToday"
-            android:textColor="@color/textColor2"
-            android:textSize="26sp"
-            tools:layout_editor_absoluteX="155dp"
-            tools:layout_editor_absoluteY="14dp" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:contentDescription="@string/search_icon"
+            android:src="@drawable/search_icon" />
+    </RelativeLayout>
 
-    </androidx.appcompat.widget.Toolbar>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/frame_2" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/floatButton"
@@ -43,25 +66,4 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/textColor2" />
-
-    <SearchView
-        android:id="@+id/search"
-        android:background="#2300E2FF"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:elevation="2dp"
-        android:queryHint="Search"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/updateToolbar" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search" />
 </androidx.constraintlayout.widget.ConstraintLayout>
