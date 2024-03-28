@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class MainViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
+class ToDoListViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
     var toDoList = MutableLiveData<List<ToDo>>()
 
     fun delete(toDo: ToDo, id: Int) {

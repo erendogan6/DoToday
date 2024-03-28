@@ -6,10 +6,10 @@
     app:startDestination="@id/workListFragment">
 
     <fragment
-        android:id="@+id/mainFragment"
-        android:name="com.erendogan6.dotoday.ui.fragment.MainFragment"
+        android:id="@+id/toDoListFragment"
+        android:name="com.erendogan6.dotoday.ui.fragment.ToDoListFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main">
+        tools:layout="@layout/fragment_todo_list">
         <action
             android:id="@+id/action_mainFragment_to_updateFragment"
             app:destination="@id/updateFragment" />
@@ -27,7 +27,7 @@
         tools:layout="@layout/fragment_worklist_save">
         <action
             android:id="@+id/action_saveFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/toDoListFragment" />
         <argument
             android:name="WorkListID"
             app:argType="integer" />
@@ -42,7 +42,7 @@
             app:argType="com.erendogan6.dotoday.data.model.ToDo" />
         <action
             android:id="@+id/action_updateFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/toDoListFragment" />
         <argument
             android:name="WorkListID"
             app:argType="integer" />
@@ -54,6 +54,6 @@
         tools:layout="@layout/fragment_work_list">
         <action
             android:id="@+id/action_workListFragment_to_mainFragment"
-            app:destination="@id/mainFragment" />
+            app:destination="@id/toDoListFragment" />
     </fragment>
 </navigation>

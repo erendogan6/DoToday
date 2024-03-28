@@ -10,17 +10,17 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.erendogan6.dotoday.data.model.ToDo
-import com.erendogan6.dotoday.databinding.FragmentMainBinding
+import com.erendogan6.dotoday.databinding.FragmentTodoListBinding
 import com.erendogan6.dotoday.ui.fragment.adaptor.ToDoAdapter
-import com.erendogan6.dotoday.ui.fragment.viewmodel.MainViewModel
+import com.erendogan6.dotoday.ui.fragment.viewmodel.ToDoListViewModel
 import com.erendogan6.dotoday.utils.transition
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainFragment : Fragment() {
-    private lateinit var binding: FragmentMainBinding
-    private lateinit var viewmodel: MainViewModel
+class ToDoListFragment : Fragment() {
+    private lateinit var binding: FragmentTodoListBinding
+    private lateinit var viewmodel: ToDoListViewModel
     private lateinit var adapter: ToDoAdapter
     private var workListID: Int = 0
     override fun onCreateView(
@@ -28,7 +28,7 @@ class MainFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMainBinding.inflate(layoutInflater, container, false)
+        binding = FragmentTodoListBinding.inflate(layoutInflater, container, false)
         loadToDos()
         setupFloatButton()
         setupSearch()
@@ -37,7 +37,7 @@ class MainFragment : Fragment() {
 
     private fun setupFloatButton() {
         binding.floatButton.setOnClickListener {
-            val action = MainFragmentDirections.actionMainFragmentToSaveFragment(workListID)
+            val action = ToDoListFragmentDirections.actionMainFragmentToSaveFragment(workListID)
             Navigation.transition(requireView(), action)
         }
     }
@@ -71,7 +71,7 @@ class MainFragment : Fragment() {
                 },
                 onItemClicked = { position ->
                     val todoItem = toDoList[position]
-                    val action = MainFragmentDirections.actionMainFragmentToUpdateFragment(
+                    val action = ToDoListFragmentDirections.actionMainFragmentToUpdateFragment(
                         todoItem,
                         workListID
                     )
@@ -89,9 +89,9 @@ class MainFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val args: MainFragmentArgs by navArgs()
+        val args: ToDoListFragmentArgs by navArgs()
         workListID = args.WorkListID
-        val tempViewModel: MainViewModel by viewModels()
+        val tempViewModel: ToDoListViewModel by viewModels()
         viewmodel = tempViewModel
     }
 
