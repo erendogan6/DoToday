@@ -1,43 +1,67 @@
 package com.erendogan6.dotoday.ui.fragment
 
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.navigation.Navigation
-import com.erendogan6.dotoday.R
-import com.erendogan6.dotoday.data.entity.ToDo
-import com.erendogan6.dotoday.databinding.FragmentSaveBinding
-import com.erendogan6.dotoday.ui.fragment.viewmodel.SaveViewModel
-import com.erendogan6.dotoday.utils.transition
+import com.erendogan6.dotoday.data.model.WorkList
+import com.erendogan6.dotoday.databinding.FragmentWorklistSaveBinding
+import com.erendogan6.dotoday.ui.fragment.viewmodel.WorkListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SaveFragment : Fragment() {
-    private lateinit var binding: FragmentSaveBinding
-    private lateinit var viewmodel : SaveViewModel
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentSaveBinding.inflate(layoutInflater,container,false)
-        binding.buttonSave.setOnClickListener {
-            val newToDo = ToDo(
-                id = 0,
-                title = binding.editTextName.text.toString(),
-                description = "Yeni görevin detayları",
-                isCompleted = false,
-                dueDate = 0L
-            )
-            viewmodel.save(newToDo)
-            Navigation.transition(requireView(),R.id.action_saveFragment_to_mainFragment)
-        }
+class SaveFragment : DialogFragment() {
+    private lateinit var binding: FragmentWorklistSaveBinding
+    private lateinit var viewmodel: WorkListViewModel
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentWorklistSaveBinding.inflate(layoutInflater, container, false)
+        setupSaveButton()
+        setupDeleteButton()
         return binding.root
+    }
+
+    fun setupSaveButton() {
+        binding.buttonSave.setOnClickListener {
+            val listText = binding.editTextName.text.toString()
+            if (listText.isNotBlank()) {
+                val newList = WorkList(0, listText)
+                viewmodel.saveWorkList(newList) {
+                    setFragmentResult("workListUpdate", bundleOf("update" to true))
+                    dismiss()
+                }
+            }
+        }
+    }
+
+    fun setupDeleteButton() {
+        binding.deleteIcon.setOnClickListener {
+            dismiss()
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val tempViewModel: SaveViewModel by viewModels()
+        val tempViewModel: WorkListViewModel by viewModels()
         viewmodel = tempViewModel
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (dialog != null) {
+            val params = dialog!!.window!!.attributes
+            params.gravity = Gravity.BOTTOM
+            params.width = ViewGroup.LayoutParams.MATCH_PARENT
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+            dialog!!.window!!.setAttributes(params)
+        }
+    }
 }
