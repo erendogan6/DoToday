@@ -2,12 +2,11 @@ package com.erendogan6.dotoday.ui.fragment.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.erendogan6.dotoday.data.entity.ToDo
-import com.erendogan6.dotoday.data.repo.DoTodayRepository
+import com.erendogan6.dotoday.data.model.ToDo
+import com.erendogan6.dotoday.data.repository.DoTodayRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.MainCoroutineDispatcher
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -15,24 +14,20 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
     var toDoList = MutableLiveData<List<ToDo>>()
 
-    init {
-        loadToDos()
-    }
-
-    fun delete(toDo: ToDo){
+    fun delete(toDo: ToDo, id: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             repo.delete(toDo)
-            loadToDos()
+            loadToDos(id)
         }
     }
 
-     fun loadToDos(){
-         CoroutineScope(Dispatchers.Main).launch {
-             toDoList.value = repo.loadToDos()
-         }
-     }
+    fun loadToDos(id: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            toDoList.value = repo.getToDosForWorkList(id)
+        }
+    }
 
-    fun search(searchText:String){
+    fun search(searchText: String) {
         CoroutineScope(Dispatchers.Main).launch {
             toDoList.value = repo.search(searchText)
         }
