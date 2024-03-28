@@ -3,7 +3,7 @@ package com.erendogan6.dotoday.di
 import android.content.Context
 import androidx.room.Room
 import com.erendogan6.dotoday.data.datasource.DoTodayDataSource
-import com.erendogan6.dotoday.data.repo.DoTodayRepository
+import com.erendogan6.dotoday.data.repository.DoTodayRepository
 import com.erendogan6.dotoday.data.room.DoTodayDao
 import com.erendogan6.dotoday.data.room.DoTodayDatabase
 import dagger.Module
@@ -30,10 +30,11 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideDoTodayDao(@ApplicationContext context: Context): DoTodayDao{
-        val db = Room.databaseBuilder(context, DoTodayDatabase::class.java,"do_today_App.db")
-            .createFromAsset("do_today_App.db")
+    fun provideDoTodayDao(@ApplicationContext context: Context): DoTodayDao {
+        val db = Room.databaseBuilder(context, DoTodayDatabase::class.java, "doTodayDB")
+            .fallbackToDestructiveMigration()
             .build()
         return db.getDao()
     }
+
 }
