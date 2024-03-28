@@ -1,8 +1,8 @@
 package com.erendogan6.dotoday.ui.fragment.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.erendogan6.dotoday.data.entity.ToDo
-import com.erendogan6.dotoday.data.repo.DoTodayRepository
+import com.erendogan6.dotoday.data.model.ToDo
+import com.erendogan6.dotoday.data.repository.DoTodayRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -11,7 +11,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UpdateViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
-    fun update(toDo:ToDo){
+    fun update(toDo: ToDo) {
         CoroutineScope(Dispatchers.Main).launch {
             repo.update(toDo)
         }
