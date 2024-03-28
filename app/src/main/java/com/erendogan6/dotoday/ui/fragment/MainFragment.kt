@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.erendogan6.dotoday.R
-import com.erendogan6.dotoday.data.entity.ToDo
+import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.databinding.FragmentMainBinding
 import com.erendogan6.dotoday.ui.fragment.adaptor.ToDoAdapter
 import com.erendogan6.dotoday.ui.fragment.viewmodel.MainViewModel
@@ -21,80 +20,83 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainFragment : Fragment() {
     private lateinit var binding: FragmentMainBinding
-    private lateinit var viewmodel : MainViewModel
+    private lateinit var viewmodel: MainViewModel
     private lateinit var adapter: ToDoAdapter
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = FragmentMainBinding.inflate(layoutInflater,container,false)
+    private var workListID: Int = 0
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentMainBinding.inflate(layoutInflater, container, false)
+        loadToDos()
+        setupFloatButton()
+        setupSearch()
+        return binding.root
+    }
 
+    private fun setupFloatButton() {
         binding.floatButton.setOnClickListener {
-            Navigation.transition(requireView(),R.id.action_mainFragment_to_saveFragment)
+            val action = MainFragmentDirections.actionMainFragmentToSaveFragment(workListID)
+            Navigation.transition(requireView(), action)
         }
+    }
 
-        binding.search.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+    private fun setupSearch() {
+        binding.searchIcon.setOnClickListener {
+            val searchText = binding.searchText.text.toString()
+            if (searchText.isNotBlank()) {
+                viewmodel.search(searchText)
             }
+        }
+    }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-
-        })
-
-        viewmodel.toDoList.observe(viewLifecycleOwner){
-            val ToDoList = ArrayList<ToDo>(it)
-            adapter = ToDoAdapter(ToDoList,
+    private fun loadToDos() {
+        viewmodel.toDoList.observe(viewLifecycleOwner) {
+            val toDoList = ArrayList<ToDo>(it)
+            adapter = ToDoAdapter(toDoList,
                 onDeleteClicked = { position ->
-                    val todoItem = ToDoList[position]
-                    Snackbar.make(binding.root, "Do You Want to Delete ${todoItem.title}?", Snackbar.LENGTH_LONG)
+                    val todoItem = toDoList[position]
+                    Snackbar.make(
+                        binding.root,
+                        "Do You Want to Delete ${todoItem.title}?",
+                        Snackbar.LENGTH_LONG
+                    )
                         .setAction("Yes") {
                             delete(todoItem)
-                            ToDoList.removeAt(position)
+                            toDoList.removeAt(position)
                             adapter.notifyItemRemoved(position)
                             adapter.notifyDataSetChanged()
                         }.show()
                 },
                 onItemClicked = { position ->
-                    val todoItem = ToDoList[position]
-                    val action = MainFragmentDirections.actionMainFragmentToUpdateFragment(todoItem)
-                    Navigation.transition(requireView(),action)
+                    val todoItem = toDoList[position]
+                    val action = MainFragmentDirections.actionMainFragmentToUpdateFragment(
+                        todoItem,
+                        workListID
+                    )
+                    Navigation.transition(requireView(), action)
                 }
             )
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerView.adapter = adapter
         }
-
-        binding.search.setOnQueryTextListener(object:SearchView.OnQueryTextListener{
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null) {
-                    viewmodel.search(query)
-                }
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-
-        })
-
-
-        return binding.root
     }
 
-    fun delete(toDo: ToDo){
-        viewmodel.delete(toDo)
+    private fun delete(toDo: ToDo) {
+        viewmodel.delete(toDo, workListID)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val args: MainFragmentArgs by navArgs()
+        workListID = args.WorkListID
         val tempViewModel: MainViewModel by viewModels()
         viewmodel = tempViewModel
     }
 
     override fun onResume() {
         super.onResume()
-        viewmodel.loadToDos()
+        viewmodel.loadToDos(workListID)
     }
-
 }
