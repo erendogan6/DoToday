@@ -46,7 +46,17 @@ class WorkListFragment : Fragment() {
                 val action =
                     WorkListFragmentDirections.actionWorkListFragmentToMainFragment(workListItem.id)
                 Navigation.transition(requireView(), action)
-            })
+            },
+            onEditClicked = { workList ->
+                val workListUpdateFragment = WorkListUpdateFragment().apply {
+                    arguments = Bundle().apply {
+                        putSerializable("workList", workList)
+                    }
+                }
+                workListUpdateFragment.show(getParentFragmentManager(), "WorkListUpdateFragment")
+            }
+
+        )
         binding.recyclerViewWorkLists.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewWorkLists.adapter = adapter
     }
