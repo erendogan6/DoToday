@@ -17,7 +17,7 @@ interface DoTodayDao {
     suspend fun delete(toDo: ToDo)
 
     @Update
-    suspend fun update(toDo: ToDo)
+    suspend fun update(workList: WorkList)
 
     @Query("SELECT * FROM ToDo WHERE title LIKE '%' || :searchText || '%'")
     suspend fun search(searchText: String): List<ToDo>
