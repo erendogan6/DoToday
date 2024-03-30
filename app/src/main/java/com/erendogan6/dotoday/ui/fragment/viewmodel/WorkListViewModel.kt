@@ -14,26 +14,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WorkListViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
-    var workList = MutableLiveData<List<WorkList>>()
+    var workLists = MutableLiveData<List<WorkList>>()
+
     fun deleteWorkList(workList: WorkList) {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             repo.deleteWorkList(workList)
             getWorkList()
         }
     }
 
     fun getWorkList() {
-        println("Viewmodel getworklist calisti")
         CoroutineScope(Dispatchers.Main).launch {
-            println("Viewmodel coroutine getallwroklists calisti")
-            workList.value = repo.getAllWorkLists()
+            workLists.value = repo.getAllWorkLists()
         }
     }
 
     fun saveWorkList(workList: WorkList, onCompleted: () -> Unit) {
-        println("Viewmodel saveworklist calisti")
         CoroutineScope(Dispatchers.IO).launch {
-            println("viewmodel coroutine insertworklist calisti")
             repo.insertWorkList(workList)
             withContext(Dispatchers.Main) {
                 onCompleted()
@@ -41,4 +38,12 @@ class WorkListViewModel @Inject constructor(var repo: DoTodayRepository) : ViewM
         }
     }
 
+    fun update(workList: WorkList, onCompleted: () -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repo.updateWorkList(workList)
+            withContext(Dispatchers.Main) {
+                onCompleted()
+            }
+        }
+    }
 }
