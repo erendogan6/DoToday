@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="35dp"
-    tools:context=".ui.fragment.SaveFragment">
+    tools:context=".ui.fragment.WorkListSaveFragment">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/saveToolbar"
@@ -31,16 +31,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|start"
-                app:srcCompat="@drawable/delete_icon"
-                android:contentDescription="@string/cancel" />
+                android:contentDescription="@string/cancel"
+                app:srcCompat="@drawable/delete_icon" />
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_gravity="center"
-                android:gravity="center"
+                android:layout_weight="1"
                 android:fontFamily="@font/im_fell_double_pica"
+                android:gravity="center"
                 android:text="@string/add_new_list"
                 android:textColor="@color/textColor2"
                 android:textSize="26sp" />
@@ -50,8 +50,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center|end"
-                app:srcCompat="@drawable/ok_icon"
-                android:contentDescription="@string/okay" />
+                android:contentDescription="@string/okay"
+                app:srcCompat="@drawable/ok_icon" />
         </LinearLayout>
     </androidx.appcompat.widget.Toolbar>
 
