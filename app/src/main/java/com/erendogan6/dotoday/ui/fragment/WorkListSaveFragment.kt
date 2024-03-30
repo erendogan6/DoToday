@@ -15,7 +15,7 @@ import com.erendogan6.dotoday.ui.fragment.viewmodel.WorkListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class SaveFragment : DialogFragment() {
+class WorkListSaveFragment : DialogFragment() {
     private lateinit var binding: FragmentWorklistSaveBinding
     private lateinit var viewmodel: WorkListViewModel
     override fun onCreateView(
