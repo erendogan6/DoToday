@@ -9,5 +9,5 @@ import java.io.Serializable
 data class WorkList(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    @ColumnInfo(name = "name") val name: String
+    @ColumnInfo(name = "name") var name: String
 ) : Serializable
