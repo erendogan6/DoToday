@@ -13,8 +13,8 @@ class DoTodayDataSource(var doTodayDao: DoTodayDao) {
         doTodayDao.save(toDo)
     }
 
-    suspend fun update(toDo: ToDo) {
-        doTodayDao.update(toDo)
+    suspend fun update(workList: WorkList) {
+        doTodayDao.update(workList)
     }
 
     suspend fun delete(toDo: ToDo) {
