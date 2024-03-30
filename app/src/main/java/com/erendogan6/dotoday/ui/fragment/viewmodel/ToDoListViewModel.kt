@@ -11,7 +11,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ToDoListViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
+class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository) : ViewModel() {
     var toDoList = MutableLiveData<List<ToDo>>()
 
     fun delete(toDo: ToDo, id: Int) {
@@ -30,6 +30,13 @@ class ToDoListViewModel @Inject constructor(var repo: DoTodayRepository) : ViewM
     fun search(searchText: String) {
         CoroutineScope(Dispatchers.Main).launch {
             toDoList.value = repo.search(searchText)
+        }
+    }
+
+    fun save(toDo: ToDo, id: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            repo.save(toDo)
+            loadToDos(id)
         }
     }
 }
