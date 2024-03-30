@@ -27,7 +27,7 @@ class ToDoListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentTodoListBinding.inflate(layoutInflater, container, false)
         loadToDos()
         setupFloatButton()
@@ -37,7 +37,8 @@ class ToDoListFragment : Fragment() {
 
     private fun setupFloatButton() {
         binding.floatButton.setOnClickListener {
-            val action = ToDoListFragmentDirections.actionMainFragmentToSaveFragment(workListID)
+            val action =
+                ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(workListID)
             Navigation.transition(requireView(), action)
         }
     }
@@ -71,11 +72,12 @@ class ToDoListFragment : Fragment() {
                 },
                 onItemClicked = { position ->
                     val todoItem = toDoList[position]
-                    val action = ToDoListFragmentDirections.actionMainFragmentToUpdateFragment(
+                    /*val action = ToDoListFragmentDirections.actionMainFragmentToUpdateFragment(
                         todoItem,
                         workListID
                     )
                     Navigation.transition(requireView(), action)
+                     */
                 }
             )
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
