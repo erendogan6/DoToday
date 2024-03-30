@@ -25,16 +25,23 @@ class WorkListFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentWorkListBinding.inflate(layoutInflater, container, false)
-        binding.floatButton.setOnClickListener {
-            val dialogFragment = SaveFragment()
-            dialogFragment.show(getParentFragmentManager(), "SaveFragment")
-        }
+        setupFloatButton()
+        setupToolbar()
         setupRecyclerView()
-        loadWorkList()
-        viewmodel.getWorkList()
         return binding.root
+    }
+
+    fun setupToolbar() {
+        binding.textDate.setText("May 5,2023")
+    }
+
+    fun setupFloatButton() {
+        binding.floatButton.setOnClickListener {
+            val dialogFragment = WorkListSaveFragment()
+            dialogFragment.show(getParentFragmentManager(), "WorkListSaveFragment")
+        }
     }
 
     fun setupRecyclerView() {
@@ -61,11 +68,12 @@ class WorkListFragment : Fragment() {
         binding.recyclerViewWorkLists.adapter = adapter
     }
 
-    fun loadWorkList() {
-        println("worklist load calisti")
-        viewmodel.workList.observe(viewLifecycleOwner) { workLists ->
-            println("observe calisti")
-            adapter.submitList(ArrayList(workLists))
+
+    private fun observeLiveData() {
+        viewmodel.workLists.observe(viewLifecycleOwner) { workLists ->
+            workLists?.let {
+                adapter.submitList(ArrayList(workLists))
+            }
         }
     }
 
@@ -75,14 +83,19 @@ class WorkListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val tempViewModel: WorkListViewModel by viewModels()
-        viewmodel = tempViewModel
         setFragmentResultListener("workListUpdate") { _, bundle ->
             val update = bundle.getBoolean("update")
             if (update) {
-                println("Save'den geldim")
                 viewmodel.getWorkList()
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val tempViewModel: WorkListViewModel by viewModels()
+        viewmodel = tempViewModel
+        viewmodel.getWorkList()
+        observeLiveData()
     }
 }
