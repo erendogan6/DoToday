@@ -8,7 +8,8 @@ import com.erendogan6.dotoday.databinding.WorklistCardDesignBinding
 
 class WorkListAdapter(
     private val onDeleteClicked: (WorkList) -> Unit,
-    private val onItemClicked: (WorkList) -> Unit
+    private val onItemClicked: (WorkList) -> Unit,
+    private val onEditClicked: (WorkList) -> Unit
 ) : RecyclerView.Adapter<WorkListAdapter.WorkListViewHolder>() {
 
     private var workLists: ArrayList<WorkList> = arrayListOf()
@@ -28,16 +29,18 @@ class WorkListAdapter(
         holder.binding.WorkListDeleteIcon.setOnClickListener {
             onDeleteClicked(workList)
         }
+        holder.binding.WorkListEditIcon.setOnClickListener {
+            onEditClicked(workList)
+        }
     }
 
     override fun getItemCount() = workLists.size
 
     fun submitList(newWorkLists: ArrayList<WorkList>) {
-        println("adaptor submitlist calisti")
-        println(newWorkLists.size)
-        this.workLists = newWorkLists
+        workLists = newWorkLists
         notifyDataSetChanged()
     }
+
 
     class WorkListViewHolder(val binding: WorklistCardDesignBinding) :
         RecyclerView.ViewHolder(binding.root)
