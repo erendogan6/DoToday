@@ -26,8 +26,8 @@ class DoTodayDataSource(var doTodayDao: DoTodayDao) {
     }
 
 
-    suspend fun search(searchText: String): List<ToDo> {
-        return doTodayDao.search(searchText)
+    suspend fun search(searchText: String, workListId: Int): List<ToDo> {
+        return doTodayDao.search(searchText, workListId)
     }
 
     suspend fun getToDosForWorkList(workListId: Int): List<ToDo> = withContext(Dispatchers.IO) {

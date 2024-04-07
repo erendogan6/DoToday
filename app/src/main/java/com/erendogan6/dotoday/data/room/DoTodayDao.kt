@@ -23,8 +23,8 @@ interface DoTodayDao {
     @Update
     suspend fun updateWorkList(workList: WorkList)
 
-    @Query("SELECT * FROM ToDo WHERE title LIKE '%' || :searchText || '%'")
-    suspend fun search(searchText: String): List<ToDo>
+    @Query("SELECT * FROM ToDo WHERE title LIKE '%' || :searchText || '%' AND workListId = :workListId")
+    suspend fun search(searchText: String, workListId: Int): List<ToDo>
 
     @Query("SELECT * FROM ToDo WHERE workListId = :workListId")
     suspend fun getToDosForWorkList(workListId: Int): List<ToDo>

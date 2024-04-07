@@ -27,17 +27,18 @@ class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository)
         }
     }
 
-    fun loadToDos(id: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
-            toDoList.value = repo.getToDosForWorkList(id)
+
+    fun search(searchText: String, workListId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val searchResults = if (searchText.isBlank()) {
+                repo.getToDosForWorkList(workListId)
+            } else {
+                repo.search(searchText, workListId)
+            }
+            toDoList.postValue(searchResults)
         }
     }
 
-    fun search(searchText: String) {
-        CoroutineScope(Dispatchers.IO).launch {
-            toDoList.value = repo.search(searchText)
-        }
-    }
 
     fun save(toDo: ToDo, id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
@@ -49,9 +50,6 @@ class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository)
     fun update(toDo: ToDo, id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             repo.update(toDo)
-            loadToDos(id)
-        }
-    }
             filterCompletedToDos(id)
         }
     }

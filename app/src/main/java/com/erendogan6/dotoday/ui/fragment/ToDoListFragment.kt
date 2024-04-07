@@ -93,6 +93,11 @@ class ToDoListFragment : Fragment() {
             }
         }
     }
+            val searchText = binding.searchText.text.toString().trim()
+            viewmodel.search(searchText, workListID)
+        }
+    }
+
 
     private fun loadToDos() {
         viewmodel.toDoList.observe(viewLifecycleOwner) {
@@ -105,7 +110,6 @@ class ToDoListFragment : Fragment() {
                     delete(todoItem)
                     toDoList.removeAt(position)
                     adapter.notifyItemRemoved(position)
-                    adapter.notifyDataSetChanged()
                 }.show()
             }, onItemClicked = { position ->
                 val todoItem = toDoList[position]
@@ -136,6 +140,6 @@ class ToDoListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewmodel.loadToDos(workListID)
+        viewmodel.filterCompletedToDos(workListID)
     }
 }

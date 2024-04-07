@@ -11,7 +11,8 @@ class DoTodayRepository @Inject constructor(private val dataSource: DoTodayDataS
 
     suspend fun delete(toDo: ToDo) = dataSource.delete(toDo)
 
-    suspend fun search(searchText: String): List<ToDo> = dataSource.search(searchText)
+    suspend fun search(searchText: String, workListId: Int): List<ToDo> =
+        dataSource.search(searchText, workListId)
 
     suspend fun getToDosForWorkList(workListId: Int): List<ToDo> =
         dataSource.getToDosForWorkList(workListId)
