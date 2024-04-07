@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.erendogan6.dotoday.R
 import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.databinding.FragmentTodoListBinding
 import com.erendogan6.dotoday.ui.fragment.adaptor.ToDoAdapter
@@ -30,7 +32,47 @@ class ToDoListFragment : Fragment() {
         loadToDos()
         setupFloatButton()
         setupSearch()
+        setupFilterButton()
         return binding.root
+    }
+
+    private fun setupFilterButton() {
+        binding.filterIcon.setOnClickListener { view ->
+            showFilterPopupMenu(view)
+        }
+    }
+
+    private fun showFilterPopupMenu(view: View) {
+        val popup = PopupMenu(requireContext(), view)
+        popup.menuInflater.inflate(R.menu.todo_filter_menu, popup.menu)
+
+        viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
+            popup.menu.findItem(R.id.show_completed).title =
+                if (showCompleted) getString(R.string.hide_completed) else getString(R.string.show_completed)
+        }
+
+        popup.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.show_completed -> {
+                    viewmodel.toggleCompletedTasks(workListID)
+                    true
+                }
+
+                R.id.sort_by_due_date -> {
+                    viewmodel.sortByDueDate()
+                    true
+                }
+
+                R.id.sort_by_title -> {
+                    viewmodel.sortAlphabetically()
+                    true
+                }
+
+                else -> false
+            }
+        }
+
+        popup.show()
     }
 
 

@@ -34,6 +34,14 @@ class DoTodayDataSource(var doTodayDao: DoTodayDao) {
         return@withContext doTodayDao.getToDosForWorkList(workListId)
     }
 
+    suspend fun getCompletedTodos(workListId: Int): List<ToDo> = withContext(Dispatchers.IO) {
+        return@withContext doTodayDao.getCompletedToDos(workListId)
+    }
+
+    suspend fun getNonCompletedToDos(workListId: Int): List<ToDo> = withContext(Dispatchers.IO) {
+        return@withContext doTodayDao.getNonCompletedToDos(workListId)
+    }
+
     @Insert
     suspend fun insertWorkList(workList: WorkList) {
         return doTodayDao.insertWorkList(workList)

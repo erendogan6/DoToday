@@ -9,14 +9,14 @@
 
     <RelativeLayout
         android:id="@+id/frame_2"
-        android:layout_width="373dp"
+        android:layout_width="0dp"
         android:layout_height="61dp"
-        android:layout_margin="15dp"
+        android:layout_margin="10dp"
         android:background="@drawable/search"
         android:elevation="2dp"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/filter_icon"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -43,6 +43,20 @@
             android:contentDescription="@string/search_icon"
             android:src="@drawable/search_icon" />
     </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/filter_icon"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/filter_icon"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"

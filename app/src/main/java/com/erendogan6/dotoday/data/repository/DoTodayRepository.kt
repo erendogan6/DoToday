@@ -5,9 +5,7 @@ import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.data.model.WorkList
 import javax.inject.Inject
 
-class DoTodayRepository @Inject constructor(
-    private val dataSource: DoTodayDataSource
-) {
+class DoTodayRepository @Inject constructor(private val dataSource: DoTodayDataSource) {
     suspend fun update(toDo: ToDo) = dataSource.update(toDo)
     suspend fun save(toDo: ToDo) = dataSource.save(toDo)
 
@@ -17,6 +15,12 @@ class DoTodayRepository @Inject constructor(
 
     suspend fun getToDosForWorkList(workListId: Int): List<ToDo> =
         dataSource.getToDosForWorkList(workListId)
+
+    suspend fun getCompletedTodos(worlListId: Int): List<ToDo> =
+        dataSource.getCompletedTodos(worlListId)
+
+    suspend fun getNonCompletedTodos(worlListId: Int): List<ToDo> =
+        dataSource.getNonCompletedToDos(worlListId)
 
     suspend fun insertWorkList(workList: WorkList) = dataSource.insertWorkList(workList)
 

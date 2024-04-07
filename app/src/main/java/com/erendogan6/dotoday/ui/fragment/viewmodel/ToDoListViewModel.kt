@@ -13,11 +13,17 @@ import javax.inject.Inject
 @HiltViewModel
 class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository) : ViewModel() {
     var toDoList = MutableLiveData<List<ToDo>>()
+    var showCompleted = MutableLiveData(false)
+
+    fun toggleCompletedTasks(workListId: Int) {
+        showCompleted.value = !(showCompleted.value)!!
+        filterCompletedToDos(workListId)
+    }
 
     fun delete(toDo: ToDo, id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             repo.delete(toDo)
-            loadToDos(id)
+            filterCompletedToDos(id)
         }
     }
 
@@ -36,7 +42,7 @@ class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository)
     fun save(toDo: ToDo, id: Int) {
         CoroutineScope(Dispatchers.IO).launch {
             repo.save(toDo)
-            loadToDos(id)
+            filterCompletedToDos(id)
         }
     }
 
@@ -46,4 +52,29 @@ class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository)
             loadToDos(id)
         }
     }
+            filterCompletedToDos(id)
+        }
+    }
+
+    fun filterCompletedToDos(workListId: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            val filteredList = if (showCompleted.value!!) {
+                repo.getCompletedTodos(workListId)
+            } else {
+                repo.getNonCompletedTodos(workListId)
+            }
+            toDoList.postValue(filteredList.sortedBy { it.dueDate })
+        }
+    }
+
+    fun sortByDueDate() {
+        toDoList.value = toDoList.value?.sortedBy { it.dueDate }
+    }
+
+    fun sortAlphabetically() {
+        toDoList.value =
+            toDoList.value?.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.title })
+    }
+
+
 }

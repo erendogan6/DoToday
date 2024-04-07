@@ -12,4 +12,9 @@
     <string name="due_date">Due Date</string>
     <string name="delete">Delete</string>
     <string name="reminder">Reminder</string>
+    <string name="sort_by_due_date">Sort By Due Date</string>
+    <string name="sort_by_title">Sort By Title</string>
+    <string name="show_completed">Show Completed</string>
+    <string name="hide_completed">Hide Completed</string>
+    <string name="daily_reminder">Daily Reminder</string>
 </resources>
