@@ -10,6 +10,10 @@ import com.erendogan6.dotoday.data.model.WorkList
 
 @Dao
 interface DoTodayDao {
+
+    @Update
+    suspend fun update(toDo: ToDo)
+
     @Insert
     suspend fun save(toDo: ToDo)
 
@@ -17,7 +21,7 @@ interface DoTodayDao {
     suspend fun delete(toDo: ToDo)
 
     @Update
-    suspend fun update(workList: WorkList)
+    suspend fun updateWorkList(workList: WorkList)
 
     @Query("SELECT * FROM ToDo WHERE title LIKE '%' || :searchText || '%'")
     suspend fun search(searchText: String): List<ToDo>
