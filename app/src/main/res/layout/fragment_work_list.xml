@@ -37,8 +37,8 @@
                 android:layout_gravity="center"
                 android:fontFamily="@font/im_fell_double_pica"
                 android:text="Monday, 11 April"
-                android:textColor="@color/textColor2"
-                android:textSize="26sp"
+                android:textColor="#FFFFFF"
+                android:textSize="30sp"
                 tools:layout_editor_absoluteX="155dp"
                 tools:layout_editor_absoluteY="14dp" />
 

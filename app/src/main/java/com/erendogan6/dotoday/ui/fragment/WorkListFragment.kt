@@ -1,5 +1,7 @@
 package com.erendogan6.dotoday.ui.fragment
 
+import android.icu.text.SimpleDateFormat
+import android.icu.util.Calendar
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,26 +17,28 @@ import com.erendogan6.dotoday.ui.fragment.adaptor.WorkListAdapter
 import com.erendogan6.dotoday.ui.fragment.viewmodel.WorkListViewModel
 import com.erendogan6.dotoday.utils.transition
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
 
 @AndroidEntryPoint
 class WorkListFragment : Fragment() {
     private lateinit var binding: FragmentWorkListBinding
     private lateinit var viewmodel: WorkListViewModel
     private lateinit var adapter: WorkListAdapter
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
         binding = FragmentWorkListBinding.inflate(layoutInflater, container, false)
         setupFloatButton()
-        setupToolbar()
+        updateDateInView()
         setupRecyclerView()
         return binding.root
     }
 
-    fun setupToolbar() {
-        binding.textDate.setText("May 5,2023")
+    private fun updateDateInView() {
+        val currentDate = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("EEEE, d MMMM", Locale.getDefault())
+        val dateString = dateFormat.format(currentDate)
+        binding.textDate.text = dateString
     }
 
     fun setupFloatButton() {
@@ -45,23 +49,20 @@ class WorkListFragment : Fragment() {
     }
 
     fun setupRecyclerView() {
-        adapter = WorkListAdapter(
-            onDeleteClicked = { workListItem ->
-                delete(workListItem)
-            },
-            onItemClicked = { workListItem ->
-                val action =
-                    WorkListFragmentDirections.actionWorkListFragmentToToDoListFragment(workListItem.id)
-                Navigation.transition(requireView(), action)
-            },
-            onEditClicked = { workList ->
-                val workListUpdateFragment = WorkListUpdateFragment().apply {
-                    arguments = Bundle().apply {
-                        putSerializable("workList", workList)
-                    }
+        adapter = WorkListAdapter(onDeleteClicked = { workListItem ->
+            delete(workListItem)
+        }, onItemClicked = { workListItem ->
+            val action =
+                WorkListFragmentDirections.actionWorkListFragmentToToDoListFragment(workListItem.id)
+            Navigation.transition(requireView(), action)
+        }, onEditClicked = { workList ->
+            val workListUpdateFragment = WorkListUpdateFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable("workList", workList)
                 }
-                workListUpdateFragment.show(getParentFragmentManager(), "WorkListUpdateFragment")
             }
+            workListUpdateFragment.show(getParentFragmentManager(), "WorkListUpdateFragment")
+        }
 
         )
         binding.recyclerViewWorkLists.layoutManager = LinearLayoutManager(requireContext())
