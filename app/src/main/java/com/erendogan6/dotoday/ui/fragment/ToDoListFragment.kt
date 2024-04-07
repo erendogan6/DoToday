@@ -87,12 +87,6 @@ class ToDoListFragment : Fragment() {
 
     private fun setupSearch() {
         binding.searchIcon.setOnClickListener {
-            val searchText = binding.searchText.text.toString()
-            if (searchText.isNotBlank()) {
-                viewmodel.search(searchText)
-            }
-        }
-    }
             val searchText = binding.searchText.text.toString().trim()
             viewmodel.search(searchText, workListID)
         }
@@ -117,9 +111,11 @@ class ToDoListFragment : Fragment() {
                     workListID,
                     todoItem)
                 Navigation.transition(requireView(), action)
-            }, onCircleClicked = { toDo ->
-                toDo.isCompleted = toDo.isCompleted.not()
-                viewmodel.update(toDo, workListID)
+            }, onCircleClicked = { toDo, itemView ->
+                itemView.animate().alpha(0.0f).setDuration(400).withEndAction {
+                    toDo.isCompleted = toDo.isCompleted.not()
+                    viewmodel.update(toDo, workListID)
+                }.start()
             })
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerView.adapter = adapter
