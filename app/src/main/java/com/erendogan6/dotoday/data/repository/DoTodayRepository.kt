@@ -8,6 +8,7 @@ import javax.inject.Inject
 class DoTodayRepository @Inject constructor(
     private val dataSource: DoTodayDataSource
 ) {
+    suspend fun update(toDo: ToDo) = dataSource.update(toDo)
     suspend fun save(toDo: ToDo) = dataSource.save(toDo)
 
     suspend fun delete(toDo: ToDo) = dataSource.delete(toDo)
@@ -23,5 +24,5 @@ class DoTodayRepository @Inject constructor(
 
     suspend fun deleteWorkList(workList: WorkList) = dataSource.deleteWorkList(workList)
 
-    suspend fun updateWorkList(workList: WorkList) = dataSource.update(workList)
+    suspend fun updateWorkList(workList: WorkList) = dataSource.updateWorkList(workList)
 }
