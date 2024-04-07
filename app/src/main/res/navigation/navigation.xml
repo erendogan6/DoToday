@@ -25,8 +25,8 @@
         <action
             android:id="@+id/action_toDoListFragment_to_toDoSaveFragment"
             app:destination="@id/toDoSaveFragment"
-            app:popUpTo="@id/workListFragment"
-            app:popUpToInclusive="false" />
+            app:popUpTo="@id/toDoListFragment"
+            app:popUpToInclusive="False" />
     </fragment>
     <fragment
         android:id="@+id/toDoSaveFragment"
