@@ -15,7 +15,7 @@ class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository)
     var toDoList = MutableLiveData<List<ToDo>>()
 
     fun delete(toDo: ToDo, id: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             repo.delete(toDo)
             loadToDos(id)
         }
@@ -28,14 +28,21 @@ class ToDoListViewModel @Inject constructor(private var repo: DoTodayRepository)
     }
 
     fun search(searchText: String) {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             toDoList.value = repo.search(searchText)
         }
     }
 
     fun save(toDo: ToDo, id: Int) {
-        CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(Dispatchers.IO).launch {
             repo.save(toDo)
+            loadToDos(id)
+        }
+    }
+
+    fun update(toDo: ToDo, id: Int) {
+        CoroutineScope(Dispatchers.IO).launch {
+            repo.update(toDo)
             loadToDos(id)
         }
     }
