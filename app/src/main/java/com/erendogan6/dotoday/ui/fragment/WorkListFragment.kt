@@ -51,7 +51,7 @@ class WorkListFragment : Fragment() {
             },
             onItemClicked = { workListItem ->
                 val action =
-                    WorkListFragmentDirections.actionWorkListFragmentToMainFragment(workListItem.id)
+                    WorkListFragmentDirections.actionWorkListFragmentToToDoListFragment(workListItem.id)
                 Navigation.transition(requireView(), action)
             },
             onEditClicked = { workList ->

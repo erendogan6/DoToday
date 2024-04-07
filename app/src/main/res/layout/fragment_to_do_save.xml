@@ -112,6 +112,48 @@
             android:inputType="date" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/reminderInputLayout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="35dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="35dp"
+        app:endIconDrawable="@drawable/calendar_icon"
+        app:endIconMode="custom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/duedateInputLayout">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editText_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:editable="false"
+            android:ems="10"
+            android:focusable="false"
+            android:hint="@string/reminder"
+            android:inputType="date" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/switchDailyReminder"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:focusedSearchResultHighlightColor="@color/mainColor"
+        android:outlineAmbientShadowColor="@color/mainColor"
+        android:outlineSpotShadowColor="@color/mainColor"
+        android:searchResultHighlightColor="@color/mainColor"
+        android:shadowColor="@color/mainColor"
+        android:text="Daily Reminder "
+        android:textColorHighlight="@color/mainColor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.872"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reminderInputLayout" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabSaveToDo"
         android:layout_width="wrap_content"
