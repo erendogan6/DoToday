@@ -20,8 +20,8 @@ import java.io.Serializable
 data class ToDo(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "title") var title: String,
-    @ColumnInfo(name = "description") val description: String?,
-    @ColumnInfo(name = "isCompleted") val isCompleted: Boolean = false,
-    @ColumnInfo(name = "dueDate") val dueDate: Long?,
+    @ColumnInfo(name = "description") var description: String?,
+    @ColumnInfo(name = "isCompleted") var isCompleted: Boolean = false,
+    @ColumnInfo(name = "dueDate") var dueDate: Long?,
     @ColumnInfo(name = "workListId") val workListId: Int
 ) : Serializable

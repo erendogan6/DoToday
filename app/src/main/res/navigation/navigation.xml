@@ -6,6 +6,15 @@
     app:startDestination="@id/workListFragment">
 
     <fragment
+        android:id="@+id/workListFragment"
+        android:name="com.erendogan6.dotoday.ui.fragment.WorkListFragment"
+        android:label="fragment_work_list"
+        tools:layout="@layout/fragment_work_list">
+        <action
+            android:id="@+id/action_workListFragment_to_toDoListFragment"
+            app:destination="@id/toDoListFragment" />
+    </fragment>
+    <fragment
         android:id="@+id/toDoListFragment"
         android:name="com.erendogan6.dotoday.ui.fragment.ToDoListFragment"
         android:label="fragment_main"
@@ -15,37 +24,9 @@
             app:argType="integer" />
         <action
             android:id="@+id/action_toDoListFragment_to_toDoSaveFragment"
-            app:destination="@id/toDoSaveFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/workListSaveFragment"
-        android:name="com.erendogan6.dotoday.ui.fragment.WorkListSaveFragment"
-        android:label="fragment_save"
-        tools:layout="@layout/fragment_worklist_save">
-        <argument
-            android:name="WorkListID"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/workListUpdateFragment"
-        android:name="com.erendogan6.dotoday.ui.fragment.WorkListUpdateFragment"
-        android:label="fragment_update"
-        tools:layout="@layout/fragment_update">
-        <argument
-            android:name="ToDo"
-            app:argType="com.erendogan6.dotoday.data.model.ToDo" />
-        <argument
-            android:name="WorkListID"
-            app:argType="integer" />
-    </fragment>
-    <fragment
-        android:id="@+id/workListFragment"
-        android:name="com.erendogan6.dotoday.ui.fragment.WorkListFragment"
-        android:label="fragment_work_list"
-        tools:layout="@layout/fragment_work_list">
-        <action
-            android:id="@+id/action_workListFragment_to_mainFragment"
-            app:destination="@id/toDoListFragment" />
+            app:destination="@id/toDoSaveFragment"
+            app:popUpTo="@id/workListFragment"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/toDoSaveFragment"
@@ -55,10 +36,14 @@
         <action
             android:id="@+id/action_toDoSaveFragment_to_toDoListFragment"
             app:destination="@id/toDoListFragment"
-            app:popUpTo="@id/toDoSaveFragment"
-            app:popUpToInclusive="true" />
+            app:popUpTo="@id/workListFragment"
+            app:popUpToInclusive="false" />
         <argument
             android:name="WorkListID"
             app:argType="integer" />
+        <argument
+            android:name="toDo"
+            app:argType="com.erendogan6.dotoday.data.model.ToDo"
+            app:nullable="true" />
     </fragment>
 </navigation>

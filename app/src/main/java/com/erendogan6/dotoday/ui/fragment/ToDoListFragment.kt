@@ -23,11 +23,9 @@ class ToDoListFragment : Fragment() {
     private lateinit var viewmodel: ToDoListViewModel
     private lateinit var adapter: ToDoAdapter
     private var workListID: Int = 0
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
         binding = FragmentTodoListBinding.inflate(layoutInflater, container, false)
         loadToDos()
         setupFloatButton()
@@ -35,10 +33,12 @@ class ToDoListFragment : Fragment() {
         return binding.root
     }
 
+
     private fun setupFloatButton() {
         binding.floatButton.setOnClickListener {
-            val action =
-                ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(workListID)
+            val action = ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(
+                workListID,
+                null)
             Navigation.transition(requireView(), action)
         }
     }
@@ -55,31 +55,26 @@ class ToDoListFragment : Fragment() {
     private fun loadToDos() {
         viewmodel.toDoList.observe(viewLifecycleOwner) {
             val toDoList = ArrayList<ToDo>(it)
-            adapter = ToDoAdapter(toDoList,
-                onDeleteClicked = { position ->
-                    val todoItem = toDoList[position]
-                    Snackbar.make(
-                        binding.root,
-                        "Do You Want to Delete ${todoItem.title}?",
-                        Snackbar.LENGTH_LONG
-                    )
-                        .setAction("Yes") {
-                            delete(todoItem)
-                            toDoList.removeAt(position)
-                            adapter.notifyItemRemoved(position)
-                            adapter.notifyDataSetChanged()
-                        }.show()
-                },
-                onItemClicked = { position ->
-                    val todoItem = toDoList[position]
-                    /*val action = ToDoListFragmentDirections.actionMainFragmentToUpdateFragment(
-                        todoItem,
-                        workListID
-                    )
-                    Navigation.transition(requireView(), action)
-                     */
-                }
-            )
+            adapter = ToDoAdapter(toDoList, onDeleteClicked = { position ->
+                val todoItem = toDoList[position]
+                Snackbar.make(binding.root,
+                              "Do You Want to Delete ${todoItem.title}?",
+                              Snackbar.LENGTH_LONG).setAction("Yes") {
+                    delete(todoItem)
+                    toDoList.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                    adapter.notifyDataSetChanged()
+                }.show()
+            }, onItemClicked = { position ->
+                val todoItem = toDoList[position]
+                val action = ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(
+                    workListID,
+                    todoItem)
+                Navigation.transition(requireView(), action)
+            }, onCircleClicked = { toDo ->
+                toDo.isCompleted = toDo.isCompleted.not()
+                viewmodel.update(toDo, workListID)
+            })
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerView.adapter = adapter
         }
