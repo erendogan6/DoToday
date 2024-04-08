@@ -29,10 +29,10 @@ interface DoTodayDao {
     @Query("SELECT * FROM ToDo WHERE workListId = :workListId")
     suspend fun getToDosForWorkList(workListId: Int): List<ToDo>
 
-    @Query("SELECT * FROM ToDo WHERE workListId = :workListId AND isCompleted=TRUE ")
+    @Query("SELECT * FROM ToDo WHERE workListId = :workListId AND isCompleted=1 ")
     suspend fun getCompletedToDos(workListId: Int): List<ToDo>
 
-    @Query("SELECT * FROM ToDo WHERE workListId = :workListId AND isCompleted=FALSE ")
+    @Query("SELECT * FROM ToDo WHERE workListId = :workListId AND isCompleted=0 ")
     suspend fun getNonCompletedToDos(workListId: Int): List<ToDo>
 
     @Insert
