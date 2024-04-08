@@ -47,11 +47,6 @@ class ToDoListFragment : Fragment() {
         val popup = PopupMenu(requireContext(), view)
         popup.menuInflater.inflate(R.menu.todo_filter_menu, popup.menu)
 
-        viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
-            popup.menu.findItem(R.id.show_completed).title =
-                if (showCompleted) getString(R.string.hide_completed) else getString(R.string.show_completed)
-        }
-
         popup.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.show_completed -> {
@@ -71,6 +66,11 @@ class ToDoListFragment : Fragment() {
 
                 else -> false
             }
+        }
+
+        viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
+            popup.menu.findItem(R.id.show_completed).title =
+                if (showCompleted) getString(R.string.show_unCompleted) else getString(R.string.show_completed)
         }
 
         popup.show()

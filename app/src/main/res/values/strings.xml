@@ -15,7 +15,7 @@
     <string name="sort_by_due_date">Sort By Due Date</string>
     <string name="sort_by_title">Sort By Title</string>
     <string name="show_completed">Show Completed</string>
-    <string name="hide_completed">Hide Completed</string>
-    <string name="daily_reminder">Daily Reminder</string>
+    <string name="show_unCompleted">Show Uncompleted</string>
+    <string name="daily_reminder">Daily Reminder </string>
     <string name="complete_todo">Complete ToDo</string>
 </resources>
