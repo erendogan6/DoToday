@@ -23,10 +23,17 @@ class ToDoAdapter(private val dataSet: ArrayList<ToDo>,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val todoItem = dataSet[position]
+
         with(holder.binding) {
             titleText.text = dataSet[position].title
-            duedateText.text = SimpleDateFormat("yyyy-MM-dd",
-                                                Locale.getDefault()).format(dataSet[position].dueDate)
+            if (todoItem.dueDate != null) {
+                duedateText.visibility = View.VISIBLE
+                duedateText.text =
+                    SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(todoItem.dueDate)
+            } else {
+                duedateText.visibility = View.GONE
+            }
             completeIcon.setImageResource(if (dataSet[position].isCompleted) R.drawable.check_circle_icon else R.drawable.circle_icon)
             deleteIcon.setOnClickListener { onDeleteClicked(position) }
             root.setOnClickListener { onItemClicked(position) }
