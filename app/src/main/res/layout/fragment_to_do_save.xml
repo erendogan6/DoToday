@@ -149,15 +149,12 @@
         android:id="@+id/switchDailyReminder"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="32dp"
         android:fontFamily="@font/lato"
         android:text="@string/daily_reminder"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.872"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/reminderInputLayout" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -174,5 +171,55 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/black" />
+
+    <RadioGroup
+        android:id="@+id/priorityRadioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.697"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchDailyReminder">
+
+        <RadioButton
+            android:id="@+id/radio_low_priority"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/low_icon"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/radio_medium_priority"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/medium_icon"
+            android:button="@null" />
+
+        <RadioButton
+            android:id="@+id/radio_high_priority"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:background="@drawable/high_icon"
+            android:button="@null" />
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        android:layout_marginTop="28dp"
+        android:fontFamily="@font/lato"
+        android:text="Priority"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@+id/priorityRadioGroup"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/switchDailyReminder" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

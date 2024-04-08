@@ -18,4 +18,5 @@ data class ToDo(@PrimaryKey(autoGenerate = true) val id: Int = 0,
                 @ColumnInfo(name = "dueDate") var dueDate: Long?,
                 @ColumnInfo(name = "workListId") val workListId: Int,
                 @ColumnInfo(name = "reminderDate") val reminderDate: Long?,
-                @ColumnInfo(name = "isDailyReminder") val isDailyReminder: Boolean) : Serializable
+                @ColumnInfo(name = "isDailyReminder") val isDailyReminder: Boolean,
+                @ColumnInfo(name = "priority") val priority: String) : Serializable

@@ -20,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.erendogan6.dotoday.R
 import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.databinding.FragmentToDoSaveBinding
 import com.erendogan6.dotoday.ui.fragment.viewmodel.ToDoListViewModel
@@ -35,15 +36,66 @@ class ToDoSaveFragment : Fragment() {
     private var toDo: ToDo? = null
     private var dueDate: Calendar = Calendar.getInstance()
     private var reminderTime: Calendar = Calendar.getInstance()
+    private var selectedPriority: String = "low"
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         binding = FragmentToDoSaveBinding.inflate(layoutInflater, container, false)
         val args: ToDoSaveFragmentArgs by navArgs()
+        setupPrioritySelection()
         setupUI(args)
         return binding.root
     }
+
+
+    private fun setupPrioritySelection() {
+        binding.priorityRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            resetPriorityIconsAndSize()
+            when (checkedId) {
+                R.id.radio_low_priority -> {
+                    binding.radioLowPriority.setBackgroundResource(R.drawable.lowselected_icon)
+                    animatePriorityIcon(binding.radioLowPriority, true)
+                    selectedPriority = "low"
+                }
+
+                R.id.radio_medium_priority -> {
+                    binding.radioMediumPriority.setBackgroundResource(R.drawable.mediumselected_icon)
+                    animatePriorityIcon(binding.radioMediumPriority, true)
+                    selectedPriority = "medium"
+                }
+
+                R.id.radio_high_priority -> {
+                    binding.radioHighPriority.setBackgroundResource(R.drawable.highselected_icon)
+                    animatePriorityIcon(binding.radioHighPriority, true)
+                    selectedPriority = "high"
+                }
+            }
+        }
+    }
+
+    private fun resetPriorityIconsAndSize() {
+        with(binding) {
+            listOf(radioLowPriority,
+                   radioMediumPriority,
+                   radioHighPriority).forEach { radioButton ->
+                radioButton.apply {
+                    when (this.id) {
+                        R.id.radio_low_priority -> this.setBackgroundResource(R.drawable.low_icon)
+                        R.id.radio_medium_priority -> this.setBackgroundResource(R.drawable.medium_icon)
+                        R.id.radio_high_priority -> this.setBackgroundResource(R.drawable.high_icon)
+                    }
+                    animatePriorityIcon(this, false)
+                }
+            }
+        }
+    }
+
+    private fun animatePriorityIcon(view: View, isSelected: Boolean) {
+        val scale = if (isSelected) 1.2f else 1.0f
+        view.animate().scaleX(scale).scaleY(scale).setDuration(300).start()
+    }
+
 
     private fun setupUI(args: ToDoSaveFragmentArgs) {
         workListID = args.WorkListID
@@ -52,7 +104,7 @@ class ToDoSaveFragment : Fragment() {
         }
 
         with(binding) {
-            toDo?.let {
+            toDo?.let { it ->
                 editTextTitle.setText(it.title)
                 editTextDescription.setText(it.description)
                 it.dueDate?.let {
@@ -62,11 +114,15 @@ class ToDoSaveFragment : Fragment() {
                 switchDailyReminder.isChecked = it.isDailyReminder
                 if (it.isDailyReminder && it.reminderDate != null) {
                     editTextReminder.setText((SimpleDateFormat("HH:mm", Locale.getDefault()).format(
-                        reminderTime.time)))
+                        it.reminderDate)))
                 } else if (!it.isDailyReminder && it.reminderDate != null) {
-                    editTextReminder.setText(SimpleDateFormat("yyyy-MM-dd",
-                                                              Locale.getDefault()).format(
-                        reminderTime.time))
+                    editTextReminder.setText(SimpleDateFormat("yyyy-MM-dd HH:mm",
+                                                              Locale.getDefault()).format(it.reminderDate))
+                }
+                when (it.priority) {
+                    "low" -> radioLowPriority.isChecked = true
+                    "medium" -> radioMediumPriority.isChecked = true
+                    "high" -> radioHighPriority.isChecked = true
                 }
             }
 
@@ -102,7 +158,7 @@ class ToDoSaveFragment : Fragment() {
                 timePickerDialog.updateTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE))
             }
         }
-        
+
         timePickerDialog.show()
     }
 
@@ -122,9 +178,30 @@ class ToDoSaveFragment : Fragment() {
                              reminderTime.get(Calendar.DAY_OF_MONTH))
 
         datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
-        if (!binding.editTextDuedate.text.isNullOrBlank()) datePickerDialog.datePicker.maxDate =
-            dueDate.timeInMillis
+        if (!binding.editTextDuedate.text.isNullOrBlank()) {
+            datePickerDialog.datePicker.maxDate = dueDate.timeInMillis
+        }
         datePickerDialog.show()
+    }
+
+    private fun updateDateInView() {
+        binding.editTextDuedate.setText(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+            dueDate.time))
+    }
+
+    private fun showDatePickerDialog() {
+        DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                dueDate.set(year, monthOfYear, dayOfMonth)
+                updateDateInView()
+            },
+            dueDate.get(Calendar.YEAR),
+            dueDate.get(Calendar.MONTH),
+            dueDate.get(Calendar.DAY_OF_MONTH),
+        ).apply {
+            datePicker.minDate = System.currentTimeMillis() - 1000
+        }.show()
     }
 
 
@@ -138,7 +215,8 @@ class ToDoSaveFragment : Fragment() {
                            dueDate = if (binding.editTextDuedate.text.isNullOrEmpty()) null else dueDate.timeInMillis,
                            workListId = toDo?.workListId ?: workListID,
                            reminderDate = if (binding.editTextReminder.text.isNullOrEmpty()) null else reminderTime.timeInMillis,
-                           isDailyReminder = binding.switchDailyReminder.isChecked)
+                           isDailyReminder = binding.switchDailyReminder.isChecked,
+                           priority = selectedPriority)
 
         if (toDo == null) {
             viewModel.save(newToDo, workListID)
@@ -173,26 +251,6 @@ class ToDoSaveFragment : Fragment() {
         return true
     }
 
-
-    private fun updateDateInView() {
-        binding.editTextDuedate.setText(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-            dueDate.time))
-    }
-
-    private fun showDatePickerDialog() {
-        DatePickerDialog(
-            requireContext(),
-            { _, year, monthOfYear, dayOfMonth ->
-                dueDate.set(year, monthOfYear, dayOfMonth)
-                updateDateInView()
-            },
-            dueDate.get(Calendar.YEAR),
-            dueDate.get(Calendar.MONTH),
-            dueDate.get(Calendar.DAY_OF_MONTH),
-        ).apply {
-            datePicker.minDate = System.currentTimeMillis() - 1000
-        }.show()
-    }
 
     private fun scheduleReminder(reminderTime: Calendar) {
         val alarmManager = context?.getSystemService(Context.ALARM_SERVICE) as AlarmManager

@@ -7,7 +7,7 @@ import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.data.model.WorkList
 import com.erendogan6.dotoday.utils.Converters
 
-@Database(entities = [ToDo::class, WorkList::class], version = 2)
+@Database(entities = [ToDo::class, WorkList::class], version = 3)
 @TypeConverters(Converters::class)
 abstract class DoTodayDatabase : RoomDatabase() {
     abstract fun getDao(): DoTodayDao
