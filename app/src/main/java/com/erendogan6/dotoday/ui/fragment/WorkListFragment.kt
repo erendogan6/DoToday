@@ -75,6 +75,11 @@ class WorkListFragment : Fragment() {
             workLists?.let {
                 adapter.submitList(ArrayList(workLists))
             }
+            if (workLists.size == 0) {
+                binding.startText.visibility = View.VISIBLE
+            } else {
+                binding.startText.visibility = View.INVISIBLE
+            }
         }
     }
 
