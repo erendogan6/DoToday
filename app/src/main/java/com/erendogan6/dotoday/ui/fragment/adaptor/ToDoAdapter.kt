@@ -34,6 +34,11 @@ class ToDoAdapter(private val dataSet: ArrayList<ToDo>,
             } else {
                 duedateText.visibility = View.GONE
             }
+            if (todoItem.reminderDate != null) {
+                alarmIcon.visibility = View.VISIBLE
+            } else {
+                alarmIcon.visibility = View.INVISIBLE
+            }
             completeIcon.setImageResource(if (dataSet[position].isCompleted) R.drawable.check_circle_icon else R.drawable.circle_icon)
             deleteIcon.setOnClickListener { onDeleteClicked(position) }
             root.setOnClickListener { onItemClicked(position) }
