@@ -36,90 +36,125 @@ class ToDoSaveFragment : Fragment() {
     private var dueDate: Calendar = Calendar.getInstance()
     private var reminderTime: Calendar = Calendar.getInstance()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreateView(inflater: LayoutInflater,
+                              container: ViewGroup?,
+                              savedInstanceState: Bundle?): View {
         binding = FragmentToDoSaveBinding.inflate(layoutInflater, container, false)
         val args: ToDoSaveFragmentArgs by navArgs()
         setupUI(args)
-        // TODO: Kaydetme fragmentından geriye doğru gelince task list'e dönüyor, düzelt.
         return binding.root
     }
 
     private fun setupUI(args: ToDoSaveFragmentArgs) {
         workListID = args.WorkListID
-        toDo = args.toDo
+        if (args.toDo != null) {
+            toDo = args.toDo
+        }
 
         with(binding) {
             toDo?.let {
                 editTextTitle.setText(it.title)
                 editTextDescription.setText(it.description)
-                dueDate.timeInMillis = it.dueDate ?: System.currentTimeMillis()
-                updateDateInView()
+                it.dueDate?.let {
+                    dueDate.timeInMillis = it
+                    updateDateInView()
+                }
+                switchDailyReminder.isChecked = it.isDailyReminder
+                if (it.isDailyReminder && it.reminderDate != null) {
+                    editTextReminder.setText((SimpleDateFormat("HH:mm", Locale.getDefault()).format(
+                        reminderTime.time)))
+                } else if (!it.isDailyReminder && it.reminderDate != null) {
+                    editTextReminder.setText(SimpleDateFormat("yyyy-MM-dd",
+                                                              Locale.getDefault()).format(
+                        reminderTime.time))
+                }
             }
+
             fabSaveToDo.setOnClickListener { saveOrUpdateToDo() }
             editTextDuedate.setOnClickListener { showDatePickerDialog() }
             editTextReminder.setOnClickListener {
                 if (!checkNotificationPermission(requireContext())) {
                     openNotificationSettingsForApp(requireContext())
                 } else {
-                    if (switchDailyReminder.isChecked) showTimePickerDialog() else showDateTimePickerDialog()
+                    if (switchDailyReminder.isChecked) {
+                        showTimePickerDialog(false)
+                    } else {
+                        showTimeDatePickerDialog()
+                    }
                 }
             }
             deleteIcon.setOnClickListener { navigateBack() }
         }
     }
 
-    private fun showTimePickerDialog() {
-        TimePickerDialog(context, { _, hourOfDay, minute ->
+    private fun showTimePickerDialog(isToday: Boolean) {
+        val timePickerDialog = TimePickerDialog(context, { _, hourOfDay, minute ->
             reminderTime.set(Calendar.HOUR_OF_DAY, hourOfDay)
             reminderTime.set(Calendar.MINUTE, minute)
-            binding.editTextReminder.setText(
-                SimpleDateFormat("HH:mm", Locale.getDefault()).format(
-                    reminderTime.time
-                )
-            )
-        }, reminderTime.get(Calendar.HOUR_OF_DAY), reminderTime.get(Calendar.MINUTE), true).show()
+            val format = if (binding.switchDailyReminder.isChecked) "HH:mm" else "yyyy-MM-dd HH:mm"
+            binding.editTextReminder.setText(SimpleDateFormat(format, Locale.getDefault()).format(
+                reminderTime.time))
+        }, reminderTime.get(Calendar.HOUR_OF_DAY), reminderTime.get(Calendar.MINUTE), true)
+
+        if (isToday) {
+            val now = Calendar.getInstance()
+            if (reminderTime.before(now)) {
+                timePickerDialog.updateTime(now.get(Calendar.HOUR_OF_DAY), now.get(Calendar.MINUTE))
+            }
+        }
+        
+        timePickerDialog.show()
     }
 
-    private fun showDateTimePickerDialog() {
-        DatePickerDialog(
-            requireContext(),
-            { _, year, monthOfYear, dayOfMonth ->
-                reminderTime.set(year, monthOfYear, dayOfMonth)
-                showTimePickerDialog()
-            },
-            reminderTime.get(Calendar.YEAR),
-            reminderTime.get(Calendar.MONTH),
-            reminderTime.get(Calendar.DAY_OF_MONTH)
-        ).apply {
-            datePicker.maxDate = dueDate.timeInMillis
-        }.show()
+
+    private fun showTimeDatePickerDialog() {
+        val datePickerDialog =
+            DatePickerDialog(requireContext(),
+                             { _, year, monthOfYear, dayOfMonth ->
+                                 reminderTime.set(year, monthOfYear, dayOfMonth)
+                                 showTimePickerDialog(reminderTime.get(Calendar.YEAR) == Calendar.getInstance()
+                                     .get(Calendar.YEAR) && reminderTime.get(Calendar.MONTH) == Calendar.getInstance()
+                                     .get(Calendar.MONTH) && reminderTime.get(Calendar.DAY_OF_MONTH) == Calendar.getInstance()
+                                     .get(Calendar.DAY_OF_MONTH))
+                             },
+                             reminderTime.get(Calendar.YEAR),
+                             reminderTime.get(Calendar.MONTH),
+                             reminderTime.get(Calendar.DAY_OF_MONTH))
+
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis() - 1000
+        if (!binding.editTextDuedate.text.isNullOrBlank()) datePickerDialog.datePicker.maxDate =
+            dueDate.timeInMillis
+        datePickerDialog.show()
     }
+
 
     private fun saveOrUpdateToDo() {
         if (!validateInput()) return
 
-        val newToDo = ToDo(
-            id = toDo?.id ?: 0,
-            title = binding.editTextTitle.text.toString().trim(),
-            description = binding.editTextDescription.text.toString().trim(),
-            isCompleted = toDo?.isCompleted ?: false,
-            dueDate = dueDate.timeInMillis,
-            workListId = toDo?.workListId ?: workListID
-        )
-        if (toDo == null)
+        val newToDo = ToDo(id = toDo?.id ?: 0,
+                           title = binding.editTextTitle.text.toString().trim(),
+                           description = binding.editTextDescription.text.toString().trim(),
+                           isCompleted = toDo?.isCompleted ?: false,
+                           dueDate = if (binding.editTextDuedate.text.isNullOrEmpty()) null else dueDate.timeInMillis,
+                           workListId = toDo?.workListId ?: workListID,
+                           reminderDate = if (binding.editTextReminder.text.isNullOrEmpty()) null else reminderTime.timeInMillis,
+                           isDailyReminder = binding.switchDailyReminder.isChecked)
+
+        if (toDo == null) {
             viewModel.save(newToDo, workListID)
-        else
+        } else {
             viewModel.update(newToDo, workListID)
+        }
 
-        if (!binding.editTextReminder.text.isNullOrBlank())
-            if (binding.switchDailyReminder.isChecked)
+        if (!binding.editTextReminder.text.isNullOrBlank()) {
+            if (binding.switchDailyReminder.isChecked) {
                 scheduleDailyReminder(reminderTime)
-            else
+            } else {
                 scheduleReminder(reminderTime)
+            }
+        }
 
+        Toast.makeText(context, "ToDo Created", Toast.LENGTH_SHORT).show()
         navigateBack()
     }
 
@@ -134,21 +169,14 @@ class ToDoSaveFragment : Fragment() {
                 editTextTitle.error = "Title cannot be empty"
                 return false
             }
-            if (editTextDuedate.text.isNullOrEmpty()) {
-                editTextDuedate.error = "Due date cannot be empty"
-                return false
-            }
         }
         return true
     }
 
 
     private fun updateDateInView() {
-        binding.editTextDuedate.setText(
-            SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
-                dueDate.time
-            )
-        )
+        binding.editTextDuedate.setText(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(
+            dueDate.time))
     }
 
     private fun showDatePickerDialog() {
@@ -171,12 +199,10 @@ class ToDoSaveFragment : Fragment() {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
             putExtra("TODO_TITLE", binding.editTextTitle.text.toString())
         }
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
+        val pendingIntent = PendingIntent.getBroadcast(context,
+                                                       0,
+                                                       intent,
+                                                       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S && !alarmManager.canScheduleExactAlarms()) {
             startActivity(Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM))
@@ -184,7 +210,6 @@ class ToDoSaveFragment : Fragment() {
         }
 
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, reminderTime.timeInMillis, pendingIntent)
-        Toast.makeText(context, "Hatırlatıcı ayarlandı", Toast.LENGTH_SHORT).show()
     }
 
     private fun scheduleDailyReminder(reminderTime: Calendar) {
@@ -192,18 +217,14 @@ class ToDoSaveFragment : Fragment() {
         val intent = Intent(context, ReminderBroadcastReceiver::class.java).apply {
             putExtra("TODO_TITLE", binding.editTextTitle.text.toString())
         }
-        val pendingIntent = PendingIntent.getBroadcast(
-            context,
-            0,
-            intent,
-            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-        )
-        alarmManager.setRepeating(
-            AlarmManager.RTC_WAKEUP,
-            reminderTime.timeInMillis,
-            AlarmManager.INTERVAL_DAY,
-            pendingIntent
-        )
+        val pendingIntent = PendingIntent.getBroadcast(context,
+                                                       0,
+                                                       intent,
+                                                       PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                                  reminderTime.timeInMillis,
+                                  AlarmManager.INTERVAL_DAY,
+                                  pendingIntent)
     }
 
     fun checkNotificationPermission(context: Context): Boolean {
