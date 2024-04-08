@@ -27,6 +27,7 @@
             android:layout_marginStart="20dp"
             android:background="@android:color/transparent"
             android:hint="@string/search_to_do"
+            android:imeOptions="actionSearch"
             android:inputType="text"
             android:textSize="14sp" />
 
@@ -80,4 +81,19 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:tint="@color/textColor2" />
+
+
+    <TextView
+        android:id="@+id/start_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/pt_serif_italic"
+        android:gravity="center"
+        android:text="You can start by creating \na new To Do"
+        android:textSize="28sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/recyclerView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/recyclerView"
+        app:layout_constraintTop_toBottomOf="@+id/frame_2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -119,6 +119,11 @@ class ToDoListFragment : Fragment() {
             })
             binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
             binding.recyclerView.adapter = adapter
+            if (toDoList.size == 0) {
+                binding.startText.visibility = View.VISIBLE
+            } else {
+                binding.startText.visibility = View.INVISIBLE
+            }
         }
     }
 
