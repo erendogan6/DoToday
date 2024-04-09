@@ -58,6 +58,11 @@ import javax.inject.Inject
         _toDoList.postValue(filteredList.sortedBy { it.dueDate })
     }
 
+    fun sortByPriority() {
+        val priorityOrder = mapOf("high" to 3, "medium" to 2, "low" to 1)
+        _toDoList.value = toDoList.value?.sortedByDescending { priorityOrder[it.priority] ?: 0 }
+    }
+
 
     fun sortByDueDate() {
         _toDoList.value = toDoList.value?.sortedBy { it.dueDate }

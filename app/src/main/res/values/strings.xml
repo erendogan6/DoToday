@@ -18,4 +18,6 @@
     <string name="show_unCompleted">Show Uncompleted</string>
     <string name="daily_reminder">Daily Reminder </string>
     <string name="complete_todo">Complete ToDo</string>
+    <string name="reminder_alarm_icon">Reminder Alarm Icon</string>
+    <string name="sort_by_priority">Sort By Priority</string>
 </resources>

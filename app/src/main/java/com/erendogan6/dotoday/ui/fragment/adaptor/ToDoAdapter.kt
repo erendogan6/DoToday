@@ -10,8 +10,12 @@ import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.databinding.TodoCardDesignBinding
 import java.util.Locale
 
-class ToDoAdapter(private val dataSet: ArrayList<ToDo>, private val onDeleteClicked: (ToDo) -> Unit, private val onItemClicked: (ToDo) -> Unit,
-    private val onCircleClicked: (ToDo, View) -> Unit) : RecyclerView.Adapter<ToDoAdapter.ViewHolder>() {
+class ToDoAdapter(
+    private val dataSet: ArrayList<ToDo>,
+    private val onDeleteClicked: (ToDo) -> Unit,
+    private val onItemClicked: (ToDo) -> Unit,
+    private val onCircleClicked: (ToDo, View) -> Unit
+) : RecyclerView.Adapter<ToDoAdapter.ViewHolder>() {
     private val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -38,6 +42,14 @@ class ToDoAdapter(private val dataSet: ArrayList<ToDo>, private val onDeleteClic
             deleteIcon.setOnClickListener { onDeleteClicked(todoItem) }
             root.setOnClickListener { onItemClicked(todoItem) }
             completeIcon.setOnClickListener { onCircleClicked(todoItem, holder.itemView) }
+
+            val priorityColor = when (todoItem.priority) {
+                "low" -> R.color.colorPriorityLow
+                "medium" -> R.color.colorPriorityMedium
+                "high" -> R.color.colorPriorityHigh
+                else -> R.color.cardColor
+            }
+            priorityBar.setBackgroundResource(priorityColor)
         }
     }
 

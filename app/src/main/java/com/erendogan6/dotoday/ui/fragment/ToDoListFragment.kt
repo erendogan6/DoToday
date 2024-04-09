@@ -67,6 +67,11 @@ import dagger.hilt.android.AndroidEntryPoint
                         true
                     }
 
+                    R.id.sort_by_priority -> {
+                        viewmodel.sortByPriority()
+                        true
+                    }
+
                     else -> false
                 }
             }

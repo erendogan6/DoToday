@@ -5,4 +5,8 @@
     <color name="mainColor">#4A90E2</color>
     <color name="textColor1">#707070</color>
     <color name="textColor2">#333333</color>
+    <color name="colorPriorityLow">#4CAF50</color>
+    <color name="colorPriorityMedium">#FFEB3B</color>
+    <color name="colorPriorityHigh">#F44336</color>
+    <color name="cardColor">#E1F5FE</color>
 </resources>

@@ -13,7 +13,6 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="25dp"
         android:layout_marginBottom="13dp"
-        android:background="#E3F2FD"
         app:cardCornerRadius="15dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -71,11 +70,23 @@
                 app:layout_constraintStart_toStartOf="@+id/title_text"
                 tools:ignore="HardcodedText" />
 
+            <View
+                android:id="@+id/priorityBar"
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginBottom="0dp"
+                android:background="#FF0000"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
+
+
             <ImageView
                 android:id="@+id/alarm_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
+                android:contentDescription="@string/reminder_alarm_icon"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/delete_icon"
                 app:layout_constraintTop_toTopOf="parent"
