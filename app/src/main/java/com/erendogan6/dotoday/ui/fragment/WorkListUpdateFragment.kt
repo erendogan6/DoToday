@@ -30,9 +30,9 @@ import dagger.hilt.android.AndroidEntryPoint
 
     private fun loadArguments() {
         workList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            requireArguments().getSerializable("workList", WorkList::class.java)!!
+            arguments?.getParcelable("workList", WorkList::class.java)!!
         } else {
-            (arguments?.getSerializable("workList") as? WorkList)!!
+            @Suppress("DEPRECATION") arguments?.getParcelable("workList")!!
         }
     }
 

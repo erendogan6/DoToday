@@ -1,13 +1,14 @@
 package com.erendogan6.dotoday.data.model
 
+import android.os.Parcelable
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
-import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
-@Entity(
+@Parcelize @Entity(
     tableName = "ToDo", foreignKeys = [ForeignKey(
         entity = WorkList::class, parentColumns = arrayOf("id"), childColumns = arrayOf("workListId"), onDelete = ForeignKey.CASCADE
     )], indices = [Index(value = ["workListId"])]
@@ -21,4 +22,4 @@ import java.io.Serializable
     @ColumnInfo(name = "reminderDate") val reminderDate: Long?,
     @ColumnInfo(name = "isDailyReminder") val isDailyReminder: Boolean,
     @ColumnInfo(name = "priority") val priority: String
-) : Serializable
+) : Parcelable
