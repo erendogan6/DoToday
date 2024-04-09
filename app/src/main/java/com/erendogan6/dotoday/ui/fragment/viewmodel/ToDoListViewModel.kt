@@ -19,17 +19,17 @@ import javax.inject.Inject
     private val _showCompleted = MutableLiveData(false)
     val showCompleted: LiveData<Boolean> = _showCompleted
 
-    fun toggleCompletedTasks(workListId: Int) {
+    fun toggleCompletedTasksToDo(workListId: Int) {
         _showCompleted.value = !(_showCompleted.value ?: false)
         filterCompletedToDos(workListId)
     }
 
-    fun delete(toDo: ToDo, id: Int) = viewModelScope.launch {
+    fun deleteToDo(toDo: ToDo, id: Int) = viewModelScope.launch {
         repo.deleteToDo(toDo)
         filterCompletedToDos(id)
     }
 
-    fun search(searchText: String, workListId: Int) = viewModelScope.launch {
+    fun searchToDo(searchText: String, workListId: Int) = viewModelScope.launch {
         val searchResults = if (searchText.isBlank()) {
             repo.getToDosForWorkList(workListId)
         } else {
@@ -39,12 +39,12 @@ import javax.inject.Inject
     }
 
 
-    fun save(toDo: ToDo, id: Int) = viewModelScope.launch {
+    fun saveToDo(toDo: ToDo, id: Int) = viewModelScope.launch {
         repo.saveToDo(toDo)
         filterCompletedToDos(id)
     }
 
-    fun update(toDo: ToDo, id: Int) = viewModelScope.launch {
+    fun updateToDo(toDo: ToDo, id: Int) = viewModelScope.launch {
         repo.updateToDo(toDo)
         filterCompletedToDos(id)
     }
@@ -58,17 +58,17 @@ import javax.inject.Inject
         _toDoList.postValue(filteredList.sortedBy { it.dueDate })
     }
 
-    fun sortByPriority() {
+    fun sortToDoByPriority() {
         val priorityOrder = mapOf("high" to 3, "medium" to 2, "low" to 1)
         _toDoList.value = toDoList.value?.sortedByDescending { priorityOrder[it.priority] ?: 0 }
     }
 
 
-    fun sortByDueDate() {
+    fun sortToDoByDueDate() {
         _toDoList.value = toDoList.value?.sortedBy { it.dueDate }
     }
 
-    fun sortAlphabetically() {
+    fun sortToDoAlphabetically() {
         _toDoList.value = toDoList.value?.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.title })
     }
 }

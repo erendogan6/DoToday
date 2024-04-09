@@ -53,22 +53,22 @@ import dagger.hilt.android.AndroidEntryPoint
             setOnMenuItemClickListener { item ->
                 when (item.itemId) {
                     R.id.show_completed -> {
-                        viewmodel.toggleCompletedTasks(workListID)
+                        viewmodel.toggleCompletedTasksToDo(workListID)
                         true
                     }
 
                     R.id.sort_by_due_date -> {
-                        viewmodel.sortByDueDate()
+                        viewmodel.sortToDoByDueDate()
                         true
                     }
 
                     R.id.sort_by_title -> {
-                        viewmodel.sortAlphabetically()
+                        viewmodel.sortToDoAlphabetically()
                         true
                     }
 
                     R.id.sort_by_priority -> {
-                        viewmodel.sortByPriority()
+                        viewmodel.sortToDoByPriority()
                         true
                     }
 
@@ -108,7 +108,7 @@ import dagger.hilt.android.AndroidEntryPoint
     }
 
     private fun performSearch() {
-        viewmodel.search(binding.searchText.text.toString(), workListID)
+        viewmodel.searchToDo(binding.searchText.text.toString(), workListID)
     }
 
     private fun FragmentTodoListBinding.setupRecyclerView() {
@@ -128,14 +128,14 @@ import dagger.hilt.android.AndroidEntryPoint
 
     private fun onDeleteClicked(toDo: ToDo) {
         Snackbar.make(binding.root, "Do You Want to Delete ${toDo.title}?", Snackbar.LENGTH_LONG).setAction("Yes") {
-            viewmodel.delete(toDo, workListID)
+            viewmodel.deleteToDo(toDo, workListID)
         }.show()
     }
 
     private fun onItemClicked(todoItem: ToDo) = navigateToSaveFragment(todoItem)
 
     private fun onCircleClicked(toDo: ToDo, itemView: View) = itemView.animate().alpha(0.1f).setDuration(300).withEndAction {
-        viewmodel.update(toDo.apply { isCompleted = !isCompleted }, workListID)
+        viewmodel.updateToDo(toDo.apply { isCompleted = !isCompleted }, workListID)
         itemView.alpha = 1f
     }.start()
 

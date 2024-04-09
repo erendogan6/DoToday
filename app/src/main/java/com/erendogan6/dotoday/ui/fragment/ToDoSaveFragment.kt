@@ -219,10 +219,10 @@ import java.util.Locale
         )
 
         val message = if (toDo == null) {
-            viewModel.save(newToDo, workListID)
+            viewModel.saveToDo(newToDo, workListID)
             "ToDo Created"
         } else {
-            viewModel.update(newToDo, workListID)
+            viewModel.updateToDo(newToDo, workListID)
             "ToDo Updated"
         }
 

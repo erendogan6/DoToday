@@ -57,7 +57,7 @@ import dagger.hilt.android.AndroidEntryPoint
     }
 
     private fun update(workList: WorkList) {
-        viewmodel.update(workList) {
+        viewmodel.updateWorkLists(workList) {
             setFragmentResult()
         }
     }

@@ -38,7 +38,7 @@ import javax.inject.Inject
         }
     }
 
-    fun update(workList: WorkList, onCompleted: () -> Unit) {
+    fun updateWorkLists(workList: WorkList, onCompleted: () -> Unit) {
         viewModelScope.launch {
             repo.updateWorkList(workList)
             withContext(Dispatchers.Main) {
