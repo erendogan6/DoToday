@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">DoToday</string>
     <string name="add_button">Add Button</string>
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="add_new_list">Add New List</string>
     <string name="search_icon">Search Icon</string>
     <string name="search_to_do">Search To Do</string>
