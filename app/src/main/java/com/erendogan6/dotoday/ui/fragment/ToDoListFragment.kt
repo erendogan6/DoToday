@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.PopupMenu
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation
@@ -135,6 +136,12 @@ import dagger.hilt.android.AndroidEntryPoint
     private fun onItemClicked(todoItem: ToDo) = navigateToSaveFragment(todoItem)
 
     private fun onCircleClicked(toDo: ToDo, itemView: View) = itemView.animate().alpha(0.1f).setDuration(300).withEndAction {
+        val message = if (toDo.isCompleted) {
+            "ToDo Uncompleted"
+        } else {
+            "ToDo Completed"
+        }
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         viewmodel.updateToDo(toDo.apply { isCompleted = !isCompleted }, workListID)
         itemView.alpha = 1f
     }.start()
