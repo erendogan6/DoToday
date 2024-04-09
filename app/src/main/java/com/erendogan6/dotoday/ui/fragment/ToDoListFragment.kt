@@ -20,77 +20,74 @@ import com.erendogan6.dotoday.utils.transition
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class ToDoListFragment : Fragment() {
+@AndroidEntryPoint class ToDoListFragment : Fragment() {
     private lateinit var binding: FragmentTodoListBinding
     private lateinit var viewmodel: ToDoListViewModel
     private lateinit var adapter: ToDoAdapter
     private var workListID: Int = 0
-    override fun onCreateView(inflater: LayoutInflater,
-                              container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        binding = FragmentTodoListBinding.inflate(layoutInflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        binding = FragmentTodoListBinding.inflate(layoutInflater, container, false).apply {
+            setupUI()
+        }
         loadToDos()
-        setupFloatButton()
-        setupSearch()
-        setupFilterButton()
+        setupRecyclerView()
         return binding.root
     }
 
-    private fun setupFilterButton() {
-        binding.filterIcon.setOnClickListener { view ->
+    private fun FragmentTodoListBinding.setupUI() {
+        setupFloatButton()
+        setupSearch()
+        setupFilterButton()
+    }
+
+    private fun FragmentTodoListBinding.setupFilterButton() {
+        filterIcon.setOnClickListener { view ->
             showFilterPopupMenu(view)
         }
     }
 
     private fun showFilterPopupMenu(view: View) {
-        val popup = PopupMenu(requireContext(), view)
-        popup.menuInflater.inflate(R.menu.todo_filter_menu, popup.menu)
+        PopupMenu(requireContext(), view).apply {
+            menuInflater.inflate(R.menu.todo_filter_menu, menu)
+            setOnMenuItemClickListener { item ->
+                when (item.itemId) {
+                    R.id.show_completed -> {
+                        viewmodel.toggleCompletedTasks(workListID)
+                        true
+                    }
 
-        popup.setOnMenuItemClickListener { item ->
-            when (item.itemId) {
-                R.id.show_completed -> {
-                    viewmodel.toggleCompletedTasks(workListID)
-                    true
+                    R.id.sort_by_due_date -> {
+                        viewmodel.sortByDueDate()
+                        true
+                    }
+
+                    R.id.sort_by_title -> {
+                        viewmodel.sortAlphabetically()
+                        true
+                    }
+
+                    else -> false
                 }
-
-                R.id.sort_by_due_date -> {
-                    viewmodel.sortByDueDate()
-                    true
-                }
-
-                R.id.sort_by_title -> {
-                    viewmodel.sortAlphabetically()
-                    true
-                }
-
-                else -> false
             }
+            viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
+                menu.findItem(R.id.show_completed).title = getString(if (showCompleted) R.string.show_unCompleted else R.string.show_completed)
+            }
+            show()
         }
-
-        viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
-            popup.menu.findItem(R.id.show_completed).title =
-                if (showCompleted) getString(R.string.show_unCompleted) else getString(R.string.show_completed)
-        }
-
-        popup.show()
     }
 
-
-    private fun setupFloatButton() {
-        binding.floatButton.setOnClickListener {
-            val action = ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(
-                workListID,
-                null)
+    private fun FragmentTodoListBinding.setupFloatButton() {
+        floatButton.setOnClickListener {
+            val action = ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(workListID, null)
             Navigation.transition(requireView(), action)
         }
     }
 
-    private fun setupSearch() {
-        binding.searchIcon.setOnClickListener {
+    private fun FragmentTodoListBinding.setupSearch() {
+        searchIcon.setOnClickListener {
             performSearch()
         }
-        binding.searchText.setOnEditorActionListener { _, actionId, _ ->
+        searchText.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                 performSearch()
                 true
@@ -100,49 +97,44 @@ class ToDoListFragment : Fragment() {
         }
     }
 
-    private fun performSearch() {
-        binding.searchText.text.toString().also { searchText ->
+    private fun FragmentTodoListBinding.performSearch() {
+        searchText.text.toString().also { searchText ->
             viewmodel.search(searchText, workListID)
         }
     }
 
-
-    private fun loadToDos() {
-        viewmodel.toDoList.observe(viewLifecycleOwner) {
-            val toDoList = ArrayList<ToDo>(it)
-            adapter = ToDoAdapter(toDoList, onDeleteClicked = { position ->
-                val todoItem = toDoList[position]
-                Snackbar.make(binding.root,
-                              "Do You Want to Delete ${todoItem.title}?",
-                              Snackbar.LENGTH_LONG).setAction("Yes") {
-                    delete(todoItem)
-                    toDoList.removeAt(position)
-                    adapter.notifyItemRemoved(position)
-                }.show()
-            }, onItemClicked = { position ->
-                val todoItem = toDoList[position]
-                val action = ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(
-                    workListID,
-                    todoItem)
-                Navigation.transition(requireView(), action)
-            }, onCircleClicked = { toDo, itemView ->
-                itemView.animate().alpha(0.0f).setDuration(400).withEndAction {
-                    toDo.isCompleted = toDo.isCompleted.not()
-                    viewmodel.update(toDo, workListID)
-                }.start()
-            })
-            binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            binding.recyclerView.adapter = adapter
-            if (toDoList.size == 0) {
-                binding.startText.visibility = View.VISIBLE
-            } else {
-                binding.startText.visibility = View.INVISIBLE
-            }
+    private fun setupRecyclerView() {
+        val mutableToDoList = arrayListOf<ToDo>()
+        adapter = ToDoAdapter(mutableToDoList, ::onDeleteClicked, ::onItemClicked, ::onCircleClicked)
+        binding.recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = this@ToDoListFragment.adapter
         }
     }
 
-    private fun delete(toDo: ToDo) {
-        viewmodel.delete(toDo, workListID)
+    private fun loadToDos() {
+        viewmodel.toDoList.observe(viewLifecycleOwner) { toDoList ->
+            adapter.updateData(toDoList)
+            binding.startText.visibility = if (toDoList.isEmpty()) View.VISIBLE else View.INVISIBLE
+        }
+    }
+
+    private fun onDeleteClicked(toDo: ToDo) {
+        Snackbar.make(binding.root, "Do You Want to Delete ${toDo.title}?", Snackbar.LENGTH_LONG).setAction("Yes") {
+            viewmodel.delete(toDo, workListID)
+        }.show()
+    }
+
+    private fun onItemClicked(todoItem: ToDo) = navigateToSaveFragment(todoItem)
+
+    private fun onCircleClicked(toDo: ToDo, itemView: View) = itemView.animate().alpha(0.1f).setDuration(300).withEndAction {
+        viewmodel.update(toDo.apply { isCompleted = !isCompleted }, workListID)
+        itemView.alpha = 1f
+    }.start()
+
+    private fun navigateToSaveFragment(toDoItem: ToDo?) {
+        val action = ToDoListFragmentDirections.actionToDoListFragmentToToDoSaveFragment(workListID, toDoItem)
+        Navigation.transition(requireView(), action)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
