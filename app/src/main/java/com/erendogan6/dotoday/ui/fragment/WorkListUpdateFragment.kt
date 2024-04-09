@@ -21,19 +21,15 @@ import dagger.hilt.android.AndroidEntryPoint
     private val viewmodel: WorkListViewModel by viewModels()
     private lateinit var workList: WorkList
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentWorklistSaveBinding.inflate(inflater, container, false).apply {
-            setupUI()
-        }
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         workList = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             requireArguments().getSerializable("workList", WorkList::class.java)!!
         } else {
             (arguments?.getSerializable("workList") as? WorkList)!!
         }
-        super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentWorklistSaveBinding.inflate(inflater, container, false).apply {
+            setupUI()
+        }
+        return binding.root
     }
 
     private fun FragmentWorklistSaveBinding.setupUI() {
