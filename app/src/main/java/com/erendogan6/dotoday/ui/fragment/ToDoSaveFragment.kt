@@ -29,7 +29,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint class ToDoSaveFragment : Fragment() {
-    private lateinit var binding: FragmentToDoSaveBinding
+    private var _binding: FragmentToDoSaveBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: ToDoListViewModel by viewModels()
     private val args: ToDoSaveFragmentArgs by navArgs()
     private var workListID: Int = 0
@@ -42,7 +43,7 @@ import java.util.Locale
     private var selectedPriority: String = LOW_PRIORITY
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentToDoSaveBinding.inflate(inflater, container, false).apply {
+        _binding = FragmentToDoSaveBinding.inflate(inflater, container, false).apply {
             setupUI()
         }
         return binding.root
@@ -146,7 +147,8 @@ import java.util.Locale
 
     private fun Calendar.isSameDay(other: Calendar): Boolean =
         this.get(Calendar.YEAR) == other.get(Calendar.YEAR) && this.get(Calendar.MONTH) == other.get(Calendar.MONTH) && this.get(
-            Calendar.DAY_OF_MONTH) == other.get(Calendar.DAY_OF_MONTH)
+            Calendar.DAY_OF_MONTH
+        ) == other.get(Calendar.DAY_OF_MONTH)
 
     private fun formatReminderDate(toDo: ToDo): String {
         val format = if (toDo.isDailyReminder) "HH:mm" else "yyyy-MM-dd HH:mm"
@@ -204,11 +206,17 @@ import java.util.Locale
     private fun saveOrUpdateToDo() {
         if (!validateInput()) return
 
-        val newToDo = ToDo(id = toDo?.id ?: 0, title = binding.editTextTitle.text.toString().trim(),
-                           description = binding.editTextDescription.text.toString().trim(), isCompleted = toDo?.isCompleted ?: false,
-                           dueDate = if (binding.editTextDuedate.text.isNullOrEmpty()) null else dueDate.timeInMillis, workListId = workListID,
-                           reminderDate = if (binding.editTextReminder.text.isNullOrEmpty()) null else reminderTime.timeInMillis,
-                           isDailyReminder = binding.switchDailyReminder.isChecked, priority = selectedPriority)
+        val newToDo = ToDo(
+            id = toDo?.id ?: 0,
+            title = binding.editTextTitle.text.toString().trim(),
+            description = binding.editTextDescription.text.toString().trim(),
+            isCompleted = toDo?.isCompleted ?: false,
+            dueDate = if (binding.editTextDuedate.text.isNullOrEmpty()) null else dueDate.timeInMillis,
+            workListId = workListID,
+            reminderDate = if (binding.editTextReminder.text.isNullOrEmpty()) null else reminderTime.timeInMillis,
+            isDailyReminder = binding.switchDailyReminder.isChecked,
+            priority = selectedPriority
+        )
 
         val message = if (toDo == null) {
             viewModel.save(newToDo, workListID)
@@ -275,5 +283,10 @@ import java.util.Locale
             putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
         }
         context.startActivity(intent)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

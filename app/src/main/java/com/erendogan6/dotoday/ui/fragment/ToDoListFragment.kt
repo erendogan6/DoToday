@@ -21,12 +21,13 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint class ToDoListFragment : Fragment() {
-    private lateinit var binding: FragmentTodoListBinding
+    private var _binding: FragmentTodoListBinding? = null
+    private val binding get() = _binding!!
     private lateinit var viewmodel: ToDoListViewModel
     private lateinit var adapter: ToDoAdapter
     private var workListID: Int = 0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        binding = FragmentTodoListBinding.inflate(layoutInflater, container, false).apply {
+        _binding = FragmentTodoListBinding.inflate(layoutInflater, container, false).apply {
             setupUI()
         }
         loadToDos()
@@ -149,5 +150,10 @@ import dagger.hilt.android.AndroidEntryPoint
     override fun onResume() {
         super.onResume()
         viewmodel.filterCompletedToDos(workListID)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

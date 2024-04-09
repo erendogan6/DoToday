@@ -18,7 +18,8 @@ import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
 @AndroidEntryPoint class WorkListFragment : Fragment() {
-    private lateinit var binding: FragmentWorkListBinding
+    private var _binding: FragmentWorkListBinding? = null
+    private val binding get() = _binding!!
     private val viewModel: WorkListViewModel by viewModels()
     private val adapter: WorkListAdapter by lazy {
         WorkListAdapter(
@@ -29,7 +30,7 @@ import java.util.Locale
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        binding = FragmentWorkListBinding.inflate(layoutInflater, container, false).apply {
+        _binding = FragmentWorkListBinding.inflate(layoutInflater, container, false).apply {
             setupUI()
         }
         return binding.root
@@ -91,5 +92,10 @@ import java.util.Locale
                 viewModel.getWorkList()
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }

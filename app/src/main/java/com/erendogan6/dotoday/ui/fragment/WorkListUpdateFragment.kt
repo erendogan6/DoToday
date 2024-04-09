@@ -15,17 +15,15 @@ import com.erendogan6.dotoday.databinding.FragmentWorklistSaveBinding
 import com.erendogan6.dotoday.ui.fragment.viewmodel.WorkListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
-class WorkListUpdateFragment : DialogFragment() {
-    private lateinit var binding: FragmentWorklistSaveBinding
-    private lateinit var viewmodel: WorkListViewModel
+@AndroidEntryPoint class WorkListUpdateFragment : DialogFragment() {
+    private var _binding: FragmentWorklistSaveBinding? = null
+    private val binding get() = _binding!!
+    private val viewmodel: WorkListViewModel by viewModels()
     private lateinit var workList: WorkList
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        binding = FragmentWorklistSaveBinding.inflate(inflater, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentWorklistSaveBinding.inflate(inflater, container, false).apply {
+            setupUI()
+        }
         return binding.root
     }
 
@@ -35,44 +33,50 @@ class WorkListUpdateFragment : DialogFragment() {
         } else {
             (arguments?.getSerializable("workList") as? WorkList)!!
         }
-        binding.saveToolbar.title = "Update Work List"
-        binding.editTextName.setText(workList.name)
-        binding.deleteIcon.setOnClickListener {
-            dismiss()
-        }
-        setupSaveButton()
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        val tempViewModel: WorkListViewModel by viewModels()
-        viewmodel = tempViewModel
+    private fun FragmentWorklistSaveBinding.setupUI() {
+        saveToolbar.title = "Update Work List"
+        editTextName.setText(workList.name)
+        deleteIcon.setOnClickListener {
+            dismiss()
+        }
+        setupSaveButton()
     }
 
-    private fun setupSaveButton() {
-        binding.buttonSave.setOnClickListener {
-            val name = binding.editTextName.text.toString()
+    private fun FragmentWorklistSaveBinding.setupSaveButton() {
+        buttonSave.setOnClickListener {
+            val name = editTextName.text.toString()
             if (name.isBlank()) {
-                binding.editTextName.error = "Title Cannot be empty"
+                editTextName.error = "Title Cannot be empty"
                 return@setOnClickListener
             }
-            workList.name = name
-            viewmodel.update(workList) {
-                setFragmentResult("workListUpdate", bundleOf("update" to true))
-                dismiss()
-            }
+            update(workList.apply { this.name = name })
         }
+    }
+
+    private fun update(workList: WorkList) {
+        viewmodel.update(workList) {
+            setFragmentResult()
+        }
+    }
+
+    private fun setFragmentResult() {
+        setFragmentResult("workListUpdate", bundleOf("update" to true))
+        dismiss()
     }
 
     override fun onStart() {
         super.onStart()
-        if (dialog != null) {
-            val params = dialog!!.window!!.attributes
-            params.gravity = Gravity.BOTTOM
-            params.width = ViewGroup.LayoutParams.MATCH_PARENT
-            params.height = ViewGroup.LayoutParams.WRAP_CONTENT
-            dialog!!.window!!.setAttributes(params)
+        dialog?.window?.apply {
+            setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            setGravity(Gravity.BOTTOM)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
     }
 }
