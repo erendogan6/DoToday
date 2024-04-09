@@ -1,33 +1,30 @@
 package com.erendogan6.dotoday.data.datasource
 
-import androidx.room.Delete
-import androidx.room.Insert
 import com.erendogan6.dotoday.data.model.ToDo
 import com.erendogan6.dotoday.data.model.WorkList
 import com.erendogan6.dotoday.data.room.DoTodayDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class DoTodayDataSource(var doTodayDao: DoTodayDao) {
-    suspend fun save(toDo: ToDo) {
-        doTodayDao.save(toDo)
+class DoTodayDataSource(val doTodayDao: DoTodayDao) {
+    suspend fun saveToDo(toDo: ToDo) {
+        doTodayDao.saveToDo(toDo)
     }
 
     suspend fun updateWorkList(workList: WorkList) {
         doTodayDao.updateWorkList(workList)
     }
 
-    suspend fun update(toDo: ToDo) {
-        doTodayDao.update(toDo)
+    suspend fun updateToDo(toDo: ToDo) {
+        doTodayDao.updateToDo(toDo)
     }
 
-    suspend fun delete(toDo: ToDo) {
-        doTodayDao.delete(toDo)
+    suspend fun deleteToDo(toDo: ToDo) {
+        doTodayDao.deleteToDo(toDo)
     }
 
-
-    suspend fun search(searchText: String, workListId: Int): List<ToDo> {
-        return doTodayDao.search(searchText, workListId)
+    suspend fun searchToDo(searchText: String, workListId: Int): List<ToDo> {
+        return doTodayDao.searchToDo(searchText, workListId)
     }
 
     suspend fun getToDosForWorkList(workListId: Int): List<ToDo> = withContext(Dispatchers.IO) {
@@ -42,7 +39,6 @@ class DoTodayDataSource(var doTodayDao: DoTodayDao) {
         return@withContext doTodayDao.getNonCompletedToDos(workListId)
     }
 
-    @Insert
     suspend fun insertWorkList(workList: WorkList) {
         return doTodayDao.insertWorkList(workList)
     }
@@ -51,7 +47,6 @@ class DoTodayDataSource(var doTodayDao: DoTodayDao) {
         return@withContext doTodayDao.getAllWorkLists()
     }
 
-    @Delete
     suspend fun deleteWorkList(workList: WorkList) {
         return doTodayDao.deleteWorkList(workList)
     }

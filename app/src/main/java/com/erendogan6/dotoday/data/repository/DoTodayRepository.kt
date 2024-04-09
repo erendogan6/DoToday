@@ -6,22 +6,18 @@ import com.erendogan6.dotoday.data.model.WorkList
 import javax.inject.Inject
 
 class DoTodayRepository @Inject constructor(private val dataSource: DoTodayDataSource) {
-    suspend fun update(toDo: ToDo) = dataSource.update(toDo)
-    suspend fun save(toDo: ToDo) = dataSource.save(toDo)
+    suspend fun updateToDo(toDo: ToDo) = dataSource.updateToDo(toDo)
+    suspend fun saveToDo(toDo: ToDo) = dataSource.saveToDo(toDo)
 
-    suspend fun delete(toDo: ToDo) = dataSource.delete(toDo)
+    suspend fun deleteToDo(toDo: ToDo) = dataSource.deleteToDo(toDo)
 
-    suspend fun search(searchText: String, workListId: Int): List<ToDo> =
-        dataSource.search(searchText, workListId)
+    suspend fun searchToDo(searchText: String, workListId: Int): List<ToDo> = dataSource.searchToDo(searchText, workListId)
 
-    suspend fun getToDosForWorkList(workListId: Int): List<ToDo> =
-        dataSource.getToDosForWorkList(workListId)
+    suspend fun getToDosForWorkList(workListId: Int): List<ToDo> = dataSource.getToDosForWorkList(workListId)
 
-    suspend fun getCompletedTodos(worlListId: Int): List<ToDo> =
-        dataSource.getCompletedTodos(worlListId)
+    suspend fun getCompletedTodos(worlListId: Int): List<ToDo> = dataSource.getCompletedTodos(worlListId)
 
-    suspend fun getNonCompletedTodos(worlListId: Int): List<ToDo> =
-        dataSource.getNonCompletedToDos(worlListId)
+    suspend fun getNonCompletedTodos(worlListId: Int): List<ToDo> = dataSource.getNonCompletedToDos(worlListId)
 
     suspend fun insertWorkList(workList: WorkList) = dataSource.insertWorkList(workList)
 

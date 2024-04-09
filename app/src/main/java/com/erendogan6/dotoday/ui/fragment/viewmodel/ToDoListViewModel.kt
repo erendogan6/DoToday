@@ -25,7 +25,7 @@ import javax.inject.Inject
     }
 
     fun delete(toDo: ToDo, id: Int) = viewModelScope.launch {
-        repo.delete(toDo)
+        repo.deleteToDo(toDo)
         filterCompletedToDos(id)
     }
 
@@ -33,19 +33,19 @@ import javax.inject.Inject
         val searchResults = if (searchText.isBlank()) {
             repo.getToDosForWorkList(workListId)
         } else {
-            repo.search(searchText, workListId)
+            repo.searchToDo(searchText, workListId)
         }
         _toDoList.postValue(searchResults)
     }
 
 
     fun save(toDo: ToDo, id: Int) = viewModelScope.launch {
-        repo.save(toDo)
+        repo.saveToDo(toDo)
         filterCompletedToDos(id)
     }
 
     fun update(toDo: ToDo, id: Int) = viewModelScope.launch {
-        repo.update(toDo)
+        repo.updateToDo(toDo)
         filterCompletedToDos(id)
     }
 
