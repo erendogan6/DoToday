@@ -12,7 +12,7 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 
-@HiltViewModel class WorkListViewModel @Inject constructor(var repo: DoTodayRepository) : ViewModel() {
+@HiltViewModel class WorkListViewModel @Inject constructor(private val repo: DoTodayRepository) : ViewModel() {
     var workLists = MutableLiveData<List<WorkList>>()
 
     fun deleteWorkList(workList: WorkList) {

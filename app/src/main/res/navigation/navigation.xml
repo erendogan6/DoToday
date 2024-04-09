@@ -2,7 +2,6 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/navigation"
     app:startDestination="@id/workListFragment">
 
     <fragment
@@ -26,7 +25,7 @@
             android:id="@+id/action_toDoListFragment_to_toDoSaveFragment"
             app:destination="@id/toDoSaveFragment"
             app:popUpTo="@id/toDoListFragment"
-            app:popUpToInclusive="False" />
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/toDoSaveFragment"

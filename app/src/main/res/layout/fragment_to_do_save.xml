@@ -41,7 +41,7 @@
                 android:layout_weight="1"
                 android:fontFamily="@font/im_fell_double_pica"
                 android:gravity="center"
-                android:text="Add New To Do"
+                android:text="@string/add_new_to_do"
                 android:textColor="@color/textColor2"
                 android:textSize="26sp" />
 
@@ -50,7 +50,6 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/titleInputLayout"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
@@ -62,7 +61,7 @@
         app:layout_constraintTop_toBottomOf="@+id/saveToolbar">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText_Title"
+            android:id="@+id/editTextTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
@@ -83,11 +82,11 @@
         app:layout_constraintTop_toBottomOf="@+id/saveToolbar">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText_description"
+            android:id="@+id/editTextDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/lato"
-            android:hint="Description"
+            android:hint="@string/description"
             android:textSize="18sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,7 +105,7 @@
         app:layout_constraintTop_toBottomOf="@id/descriptionInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText_duedate"
+            android:id="@+id/editTextDuedate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
@@ -133,7 +132,7 @@
         app:layout_constraintTop_toBottomOf="@id/duedateInputLayout">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editText_reminder"
+            android:id="@+id/editTextReminder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:editable="false"
@@ -209,13 +208,12 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="44dp"
         android:layout_marginTop="28dp"
         android:fontFamily="@font/lato"
-        android:text="Priority"
+        android:text="@string/priority"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/priorityRadioGroup"
         app:layout_constraintStart_toStartOf="parent"

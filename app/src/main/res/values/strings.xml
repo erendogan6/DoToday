@@ -19,4 +19,12 @@
     <string name="complete_todo">Complete ToDo</string>
     <string name="reminder_alarm_icon">Reminder Alarm Icon</string>
     <string name="sort_by_priority">Sort By Priority</string>
+    <string name="filter">Filter</string>
+    <string name="rename_worklist">Rename WorkList</string>
+    <string name="delete_worklist">Delete WorkList</string>
+    <string name="add_new_to_do">Add New To Do</string>
+    <string name="description">Description</string>
+    <string name="priority">Priority</string>
+    <string name="you_can_start_by_creating_na_new_to_do">You can start by creating \na new To Do</string>
+    <string name="you_can_start_by_creating_na_new_work_list">You can start by creating \na new Work List</string>
 </resources>
