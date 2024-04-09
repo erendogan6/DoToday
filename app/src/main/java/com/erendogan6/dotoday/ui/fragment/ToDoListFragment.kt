@@ -30,7 +30,6 @@ import dagger.hilt.android.AndroidEntryPoint
             setupUI()
         }
         loadToDos()
-        setupRecyclerView()
         return binding.root
     }
 
@@ -38,6 +37,7 @@ import dagger.hilt.android.AndroidEntryPoint
         setupFloatButton()
         setupSearch()
         setupFilterButton()
+        setupRecyclerView()
     }
 
     private fun FragmentTodoListBinding.setupFilterButton() {
@@ -69,10 +69,14 @@ import dagger.hilt.android.AndroidEntryPoint
                     else -> false
                 }
             }
-            viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
-                menu.findItem(R.id.show_completed).title = getString(if (showCompleted) R.string.show_unCompleted else R.string.show_completed)
-            }
+            observeCompletedFilter(this)
             show()
+        }
+    }
+
+    private fun observeCompletedFilter(popMenu: PopupMenu) {
+        viewmodel.showCompleted.observe(viewLifecycleOwner) { showCompleted ->
+            popMenu.menu.findItem(R.id.show_completed).title = getString(if (showCompleted) R.string.show_unCompleted else R.string.show_completed)
         }
     }
 
@@ -97,16 +101,13 @@ import dagger.hilt.android.AndroidEntryPoint
         }
     }
 
-    private fun FragmentTodoListBinding.performSearch() {
-        searchText.text.toString().also { searchText ->
-            viewmodel.search(searchText, workListID)
-        }
+    private fun performSearch() {
+        viewmodel.search(binding.searchText.text.toString(), workListID)
     }
 
-    private fun setupRecyclerView() {
-        val mutableToDoList = arrayListOf<ToDo>()
-        adapter = ToDoAdapter(mutableToDoList, ::onDeleteClicked, ::onItemClicked, ::onCircleClicked)
-        binding.recyclerView.apply {
+    private fun FragmentTodoListBinding.setupRecyclerView() {
+        adapter = ToDoAdapter(arrayListOf(), ::onDeleteClicked, ::onItemClicked, ::onCircleClicked)
+        recyclerView.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = this@ToDoListFragment.adapter
         }
