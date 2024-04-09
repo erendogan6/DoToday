@@ -7,16 +7,13 @@ import com.erendogan6.dotoday.data.model.WorkList
 import com.erendogan6.dotoday.databinding.WorklistCardDesignBinding
 
 class WorkListAdapter(
-    private val onDeleteClicked: (WorkList) -> Unit,
-    private val onItemClicked: (WorkList) -> Unit,
-    private val onEditClicked: (WorkList) -> Unit
+    private val onDeleteClicked: (WorkList) -> Unit, private val onItemClicked: (Int) -> Unit, private val onEditClicked: (WorkList) -> Unit
 ) : RecyclerView.Adapter<WorkListAdapter.WorkListViewHolder>() {
 
     private var workLists: ArrayList<WorkList> = arrayListOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkListViewHolder {
-        val binding =
-            WorklistCardDesignBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = WorklistCardDesignBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WorkListViewHolder(binding)
     }
 
@@ -24,7 +21,7 @@ class WorkListAdapter(
         val workList = workLists[position]
         holder.binding.WorkListName.text = workList.name
         holder.binding.root.setOnClickListener {
-            onItemClicked(workList)
+            onItemClicked(workList.id)
         }
         holder.binding.WorkListDeleteIcon.setOnClickListener {
             onDeleteClicked(workList)
@@ -42,6 +39,5 @@ class WorkListAdapter(
     }
 
 
-    class WorkListViewHolder(val binding: WorklistCardDesignBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    class WorkListViewHolder(val binding: WorklistCardDesignBinding) : RecyclerView.ViewHolder(binding.root)
 }
