@@ -24,7 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint class ToDoListFragment : Fragment() {
     private var _binding: FragmentTodoListBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewmodel: ToDoListViewModel
+    private val viewmodel: ToDoListViewModel by viewModels()
     private lateinit var adapter: ToDoAdapter
     private var workListID: Int = 0
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
@@ -155,8 +155,6 @@ import dagger.hilt.android.AndroidEntryPoint
         super.onCreate(savedInstanceState)
         val args: ToDoListFragmentArgs by navArgs()
         workListID = args.WorkListID
-        val tempViewModel: ToDoListViewModel by viewModels()
-        viewmodel = tempViewModel
     }
 
     override fun onResume() {
