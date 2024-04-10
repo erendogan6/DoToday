@@ -8,10 +8,10 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_marginStart="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="13dp"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="20dp"
+        android:layout_marginEnd="13dp"
         android:layout_marginBottom="10dp"
         app:cardCornerRadius="50dp">
 
@@ -22,14 +22,15 @@
 
             <TextView
                 android:id="@+id/WorkListName"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
                 android:text="Spor"
                 android:textColor="@color/textColor2"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.105"
+                app:layout_constraintEnd_toStartOf="@+id/circularProgress"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.506"
@@ -39,7 +40,7 @@
                 android:id="@+id/WorkListEditIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="16dp"
+                android:layout_marginEnd="8dp"
                 android:contentDescription="@string/rename_worklist"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/WorkList_delete_icon"
@@ -50,7 +51,7 @@
                 android:id="@+id/WorkList_delete_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="25dp"
+                android:layout_marginEnd="15dp"
                 android:contentDescription="@string/delete_worklist"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -61,16 +62,17 @@
                 android:id="@+id/circularProgress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="6dp"
+                android:layout_marginStart="3dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="3dp"
+                android:layout_marginBottom="10dp"
                 android:indeterminate="false"
                 app:indicatorColor="#1976D2"
-                app:indicatorSize="63dp"
+                app:indicatorSize="60dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.667"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/WorkListEditIcon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:trackThickness="4dp" />
+                app:trackThickness="3dp" />
 
             <TextView
                 android:id="@+id/percantageText"
@@ -78,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:text="75%"
                 android:textColor="@color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="@id/circularProgress"
                 app:layout_constraintEnd_toEndOf="@id/circularProgress"
                 app:layout_constraintStart_toStartOf="@id/circularProgress"
