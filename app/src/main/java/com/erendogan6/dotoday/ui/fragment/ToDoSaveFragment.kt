@@ -184,7 +184,7 @@ import java.util.Locale
     }
 
     private fun FragmentToDoSaveBinding.updateDueDateInView() {
-        editTextDuedate.setText(formatDateTime(dueDate))
+        editTextDuedate.setText(SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(dueDate.time))
     }
 
     private fun FragmentToDoSaveBinding.showDatePickerDialog() {
