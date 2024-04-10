@@ -50,4 +50,6 @@ class DoTodayDataSource(val doTodayDao: DoTodayDao) {
     suspend fun deleteWorkList(workList: WorkList) {
         return doTodayDao.deleteWorkList(workList)
     }
+
+    suspend fun getAllToDos(): List<ToDo> = doTodayDao.getAllToDos()
 }

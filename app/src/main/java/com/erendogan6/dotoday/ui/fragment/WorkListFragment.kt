@@ -37,9 +37,17 @@ import java.util.Locale
     }
 
     private fun FragmentWorkListBinding.setupUI() {
+        setupMatrisButton()
         setupFloatButton()
         updateDateInView()
         setupRecyclerView()
+    }
+
+    private fun FragmentWorkListBinding.setupMatrisButton() {
+        matrisButton.setOnClickListener {
+            val action = WorkListFragmentDirections.actionWorkListFragmentToEisenHowerMatrixFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun FragmentWorkListBinding.updateDateInView() {

@@ -9,7 +9,7 @@
         android:id="@+id/updateToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#2196F3"
+        android:background="#03A9F4"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
@@ -41,14 +41,14 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="4dp"
-                android:background="#127897" />
+                android:background="#1090CA" />
 
         </LinearLayout>
     </LinearLayout>
 
 
     <LinearLayout
-        android:id="@+id/frameLayout2"
+        android:id="@+id/importantAndUrgent"
         android:layout_width="175dp"
         android:layout_height="250dp"
         android:layout_marginStart="32dp"
@@ -56,7 +56,7 @@
         android:layout_marginEnd="4dp"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout3"
+        app:layout_constraintEnd_toStartOf="@+id/importantAndNotUrgent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -80,7 +80,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/frameLayout"
+        android:id="@+id/notImportantAndUrgent"
         android:layout_width="175dp"
         android:layout_height="250dp"
         android:layout_marginStart="32dp"
@@ -89,10 +89,10 @@
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout4"
+        app:layout_constraintEnd_toStartOf="@+id/notImportantAndNotUrgent"
         app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout2"
+        app:layout_constraintTop_toBottomOf="@+id/importantAndUrgent"
         app:layout_constraintVertical_bias="0.462">
 
         <ImageView
@@ -114,7 +114,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/frameLayout4"
+        android:id="@+id/notImportantAndNotUrgent"
         android:layout_width="175dp"
         android:layout_height="250dp"
         android:layout_marginEnd="8dp"
@@ -123,7 +123,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/frameLayout3"
+        app:layout_constraintTop_toBottomOf="@+id/importantAndNotUrgent"
         app:layout_constraintVertical_bias="0.462">
 
         <ImageView
@@ -144,7 +144,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/frameLayout3"
+        android:id="@+id/importantAndNotUrgent"
         android:layout_width="175dp"
         android:layout_height="250dp"
         android:layout_marginTop="184dp"
@@ -182,11 +182,11 @@
         android:text="Important"
         android:textColor="#F72D1B"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayout2"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout2"
+        app:layout_constraintBottom_toBottomOf="@+id/importantAndUrgent"
+        app:layout_constraintEnd_toStartOf="@+id/importantAndUrgent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout2"
+        app:layout_constraintTop_toTopOf="@+id/importantAndUrgent"
         app:layout_constraintVertical_bias="0.381" />
 
     <TextView
@@ -200,11 +200,11 @@
         android:text="Not Important"
         android:textColor="#F72D1B"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="@+id/frameLayout"
-        app:layout_constraintEnd_toStartOf="@+id/frameLayout"
+        app:layout_constraintBottom_toBottomOf="@+id/notImportantAndUrgent"
+        app:layout_constraintEnd_toStartOf="@+id/notImportantAndUrgent"
         app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/frameLayout"
+        app:layout_constraintTop_toTopOf="@+id/notImportantAndUrgent"
         app:layout_constraintVertical_bias="0.455" />
 
     <TextView
@@ -215,10 +215,10 @@
         android:text="Urgent"
         android:textColor="#F72D1B"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout2"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayout2"
+        app:layout_constraintBottom_toTopOf="@+id/importantAndUrgent"
+        app:layout_constraintEnd_toEndOf="@+id/importantAndUrgent"
         app:layout_constraintHorizontal_bias="0.512"
-        app:layout_constraintStart_toStartOf="@+id/frameLayout2"
+        app:layout_constraintStart_toStartOf="@+id/importantAndUrgent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -230,9 +230,9 @@
         android:text="Not Urgent"
         android:textColor="#F72D1B"
         android:textSize="30sp"
-        app:layout_constraintBottom_toTopOf="@+id/frameLayout3"
-        app:layout_constraintEnd_toEndOf="@+id/frameLayout3"
-        app:layout_constraintStart_toStartOf="@+id/frameLayout3"
+        app:layout_constraintBottom_toTopOf="@+id/importantAndNotUrgent"
+        app:layout_constraintEnd_toEndOf="@+id/importantAndNotUrgent"
+        app:layout_constraintStart_toStartOf="@+id/importantAndNotUrgent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />
 

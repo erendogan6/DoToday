@@ -38,7 +38,7 @@
                 android:fontFamily="@font/im_fell_double_pica"
                 android:text="Monday, 11 April"
                 android:textColor="#FFFFFF"
-                android:textSize="30sp"
+                android:textSize="36sp"
                 tools:ignore="HardcodedText"
                 tools:layout_editor_absoluteX="155dp"
                 tools:layout_editor_absoluteY="14dp" />
@@ -67,6 +67,20 @@
         android:clickable="true"
         android:contentDescription="@string/add_new_list"
         android:src="@drawable/add_icon"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:tint="@color/textColor2" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/matrisButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="88dp"
+        android:backgroundTint="#4FD554"
+        android:clickable="true"
+        android:contentDescription="Eisenhower Matris"
+        android:src="@drawable/grid_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:tint="@color/textColor2" />

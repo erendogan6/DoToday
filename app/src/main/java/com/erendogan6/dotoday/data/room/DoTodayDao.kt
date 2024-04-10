@@ -34,4 +34,6 @@ import com.erendogan6.dotoday.data.model.WorkList
 
     @Delete suspend fun deleteWorkList(workList: WorkList)
 
+    @Query("SELECT * FROM ToDo") suspend fun getAllToDos(): List<ToDo>
+
 }

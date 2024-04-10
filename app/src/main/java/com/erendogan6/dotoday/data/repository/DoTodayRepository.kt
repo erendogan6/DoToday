@@ -26,4 +26,6 @@ class DoTodayRepository @Inject constructor(private val dataSource: DoTodayDataS
     suspend fun deleteWorkList(workList: WorkList) = dataSource.deleteWorkList(workList)
 
     suspend fun updateWorkList(workList: WorkList) = dataSource.updateWorkList(workList)
+
+    suspend fun getAllToDos(): List<ToDo> = dataSource.getAllToDos()
 }

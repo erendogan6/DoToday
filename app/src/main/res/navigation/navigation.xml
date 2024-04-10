@@ -12,6 +12,9 @@
         <action
             android:id="@+id/action_workListFragment_to_toDoListFragment"
             app:destination="@id/toDoListFragment" />
+        <action
+            android:id="@+id/action_workListFragment_to_eisenHowerMatrixFragment"
+            app:destination="@id/eisenHowerMatrixFragment" />
     </fragment>
     <fragment
         android:id="@+id/toDoListFragment"
@@ -44,5 +47,25 @@
             android:name="toDo"
             app:argType="com.erendogan6.dotoday.data.model.ToDo"
             app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/eisenHowerMatrixFragment"
+        android:name="com.erendogan6.dotoday.ui.fragment.EisenHowerMatrixFragment"
+        android:label="EisenHowerMatrixFragment">
+        <action
+            android:id="@+id/action_eisenHowerMatrixFragment_to_eisenHowerList"
+            app:destination="@id/eisenHowerList" />
+    </fragment>
+    <fragment
+        android:id="@+id/eisenHowerList"
+        android:name="com.erendogan6.dotoday.ui.fragment.EisenHowerList"
+        android:label="fragment_eisen_hower_list"
+        tools:layout="@layout/fragment_eisen_hower_list">
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_eisenHowerList_to_toDoSaveFragment"
+            app:destination="@id/toDoSaveFragment" />
     </fragment>
 </navigation>
