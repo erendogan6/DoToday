@@ -18,7 +18,7 @@ import javax.inject.Inject
     val todos: MutableLiveData<List<ToDo>?> get() = _todos
     private val _dataLoaded = MutableLiveData<Boolean>()
     val dataLoaded: LiveData<Boolean> get() = _dataLoaded
-    var lastOpenedFragment: String? = null
+    private var lastOpenedFragment: String? = null
 
     init {
         loadAllTodos()
@@ -33,24 +33,32 @@ import javax.inject.Inject
     }
 
     fun filterTodosForCategory(category: String) {
-        val filteredTodos = when (category) {
-            "important_and_urgent" -> todos.value?.filter { it.isUrgent() && it.isImportant() }
-            "important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && it.isImportant() }
-            "not_important_and_urgent" -> todos.value?.filter { it.isUrgent() && !it.isImportant() }
-            "not_important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && !it.isImportant() }
-            else -> listOf()
-        }
-        if (filteredTodos != null) {
-            _todos.value = filteredTodos.sortedBy { it.dueDate }
+        viewModelScope.launch {
+            lastOpenedFragment = category
+            val filteredTodos = when (category) {
+                "important_and_urgent" -> todos.value?.filter { it.isUrgent() && it.isImportant() }
+                "important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && it.isImportant() }
+                "not_important_and_urgent" -> todos.value?.filter { it.isUrgent() && !it.isImportant() }
+                "not_important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && !it.isImportant() }
+                else -> listOf()
+            }
+            if (filteredTodos != null) {
+                _todos.postValue(filteredTodos.sortedBy { it.dueDate })
+            }
+            _dataLoaded.postValue(false)
         }
     }
 
     fun deleteToDoAndUpdateView(toDo: ToDo) = viewModelScope.launch {
         repo.deleteToDo(toDo)
+        loadAllTodos()
+        filterTodosForCategory(lastOpenedFragment!!)
     }
 
     fun updateToDoAndUpdateView(toDo: ToDo) = viewModelScope.launch {
         repo.updateToDo(toDo)
+        loadAllTodos()
+        filterTodosForCategory(lastOpenedFragment!!)
     }
 
     private fun ToDo.isUrgent(): Boolean {
