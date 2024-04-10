@@ -14,6 +14,7 @@ import com.erendogan6.dotoday.data.model.WorkList
 import com.erendogan6.dotoday.databinding.FragmentWorkListBinding
 import com.erendogan6.dotoday.ui.fragment.adaptor.WorkListAdapter
 import com.erendogan6.dotoday.ui.fragment.viewmodel.WorkListViewModel
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
 
@@ -23,7 +24,7 @@ import java.util.Locale
     private val viewModel: WorkListViewModel by viewModels()
     private val adapter: WorkListAdapter by lazy {
         WorkListAdapter(
-            onDeleteClicked = viewModel::deleteWorkList,
+            onDeleteClicked = this::deleteWorklist,
             onItemClicked = this::navigateToToDoList,
             onEditClicked = this::showWorkListUpdateFragment,
             calculateCompletionPercentage = this::calculateProgess
@@ -108,6 +109,12 @@ import java.util.Locale
         viewModel.calculateCompletionPercentage(workListId).observe(viewLifecycleOwner) { percentage ->
             callback(percentage)
         }
+    }
+
+    private fun deleteWorklist(workList: WorkList) {
+        Snackbar.make(requireContext(), requireView(), "Are You Want Delete ${workList.name}", Snackbar.LENGTH_SHORT).setAction("Yes") {
+            viewModel.deleteWorkList(workList)
+        }.show()
     }
 
     override fun onDestroy() {
