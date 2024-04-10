@@ -36,10 +36,10 @@ import javax.inject.Inject
         viewModelScope.launch {
             lastOpenedFragment = category
             val filteredTodos = when (category) {
-                "important_and_urgent" -> todos.value?.filter { it.isUrgent() && it.isImportant() }
-                "important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && it.isImportant() }
-                "not_important_and_urgent" -> todos.value?.filter { it.isUrgent() && !it.isImportant() }
-                "not_important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && !it.isImportant() }
+                "important_and_urgent" -> todos.value?.filter { it.isUrgent() && it.isImportant() && !it.isCompleted }
+                "important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && it.isImportant() && !it.isCompleted }
+                "not_important_and_urgent" -> todos.value?.filter { it.isUrgent() && !it.isImportant() && !it.isCompleted }
+                "not_important_and_not_urgent" -> todos.value?.filter { !it.isUrgent() && !it.isImportant() && !it.isCompleted }
                 else -> listOf()
             }
             if (filteredTodos != null) {
