@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.erendogan6.dotoday.databinding.FragmentEisenHoverBinding
@@ -33,19 +34,27 @@ class EisenHowerMatrixFragment : Fragment() {
     private fun FragmentEisenHoverBinding.setupClickListeners() {
         importantAndUrgent.setOnClickListener {
             navigateToListFragment("important_and_urgent")
+            showToast("Do the task yourself immediately")
         }
 
         importantAndNotUrgent.setOnClickListener {
             navigateToListFragment("important_and_not_urgent")
+            showToast("Plan the task and complete it yourself")
         }
 
         notImportantAndUrgent.setOnClickListener {
             navigateToListFragment("not_important_and_urgent")
+            showToast("Delegate/Automate, if not possible, do it yourself after a time")
         }
 
         notImportantAndNotUrgent.setOnClickListener {
             navigateToListFragment("not_important_and_not_urgent")
+            showToast("Forget it and come back later")
         }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(requireActivity().applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
     private fun navigateToListFragment(categoryName: String) {
