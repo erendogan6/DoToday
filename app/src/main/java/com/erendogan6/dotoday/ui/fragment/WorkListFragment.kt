@@ -23,7 +23,10 @@ import java.util.Locale
     private val viewModel: WorkListViewModel by viewModels()
     private val adapter: WorkListAdapter by lazy {
         WorkListAdapter(
-            onDeleteClicked = viewModel::deleteWorkList, onItemClicked = this::navigateToToDoList, onEditClicked = this::showWorkListUpdateFragment
+            onDeleteClicked = viewModel::deleteWorkList,
+            onItemClicked = this::navigateToToDoList,
+            onEditClicked = this::showWorkListUpdateFragment,
+            calculateCompletionPercentage = this::calculateProgess
         )
     }
 
@@ -86,7 +89,6 @@ import java.util.Locale
         WorkListUpdateFragment().apply { arguments = args }.show(parentFragmentManager, "WorkListUpdateFragment")
     }
 
-
     private fun observeWorkLists() {
         viewModel.workLists.observe(viewLifecycleOwner) { workLists ->
             adapter.submitList(ArrayList(workLists))
@@ -99,6 +101,12 @@ import java.util.Locale
             if (bundle.getBoolean("update", false)) {
                 viewModel.getWorkList()
             }
+        }
+    }
+
+    private fun calculateProgess(workListId: Int, callback: (Int) -> Unit) {
+        viewModel.calculateCompletionPercentage(workListId).observe(viewLifecycleOwner) { percentage ->
+            callback(percentage)
         }
     }
 
