@@ -28,4 +28,18 @@
     <string name="you_can_start_by_creating_na_new_to_do">You can start by creating \na new To Do</string>
     <string name="you_can_start_by_creating_na_new_work_list">You can start by creating \na new Work List</string>
     <string name="this_list_is_empty">This List Is Empty</string>
+    <string name="eisenhower_matrix">Eisenhower Matrix</string>
+    <string name="do_">Do</string>
+    <string name="do_icon">Do Icon</string>
+    <string name="delagate">Delagate</string>
+    <string name="delagate_icon">Delagate Icon</string>
+    <string name="eliminate">Eliminate</string>
+    <string name="eliminate_icon">Eliminate Icon</string>
+    <string name="schedule_icon">Schedule Icon</string>
+    <string name="schedule">Schedule</string>
+    <string name="important">Important</string>
+    <string name="not_important">Not Important</string>
+    <string name="urgent">Urgent</string>
+    <string name="not_urgent">Not Urgent</string>
+    <string name="question_icon">Question Icon</string>
 </resources>

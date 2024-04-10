@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#03A9F4">
@@ -10,40 +11,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#03A9F4"
+        android:gravity="center"
         android:minHeight="?attr/actionBarSize"
+        android:orientation="vertical"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+        <ImageView
+            android:layout_width="75dp"
+            android:layout_height="80dp"
+            android:importantForAccessibility="no"
+            android:src="@drawable/logo" />
+
+        <TextView
+            android:id="@+id/textDate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
+            android:layout_gravity="center"
+            android:fontFamily="@font/im_fell_double_pica"
+            android:text="@string/eisenhower_matrix"
+            android:textColor="#FFFFFF"
+            android:textSize="36sp" />
 
-            <ImageView
-                android:layout_width="75dp"
-                android:layout_height="80dp"
-                android:importantForAccessibility="no"
-                android:src="@drawable/logo" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:background="#1090CA" />
 
-            <TextView
-                android:id="@+id/textDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:fontFamily="@font/im_fell_double_pica"
-                android:text="Eisenhower Matrix"
-                android:textColor="#FFFFFF"
-                android:textSize="36sp" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="4dp"
-                android:background="#1090CA" />
-
-        </LinearLayout>
     </LinearLayout>
 
 
@@ -59,12 +55,14 @@
         app:layout_constraintEnd_toStartOf="@+id/importantAndNotUrgent"
         app:layout_constraintHorizontal_bias="0.6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="175dp"
             android:layout_height="175dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/do_icon"
             android:src="@drawable/do_icon" />
 
         <TextView
@@ -72,7 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/im_fell_double_pica"
-            android:text="Do"
+            android:text="@string/do_"
             android:textColor="#dce24a"
             android:textSize="30sp" />
 
@@ -93,12 +91,14 @@
         app:layout_constraintHorizontal_bias="0.588"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/importantAndUrgent"
-        app:layout_constraintVertical_bias="0.462">
+        app:layout_constraintVertical_bias="0.462"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="175dp"
             android:layout_height="175dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/delagate_icon"
             android:src="@drawable/people_icon" />
 
         <TextView
@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/im_fell_double_pica"
-            android:text="Delagate"
+            android:text="@string/delagate"
             android:textColor="#dce24a"
             android:textSize="30sp" />
 
@@ -124,12 +124,14 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/importantAndNotUrgent"
-        app:layout_constraintVertical_bias="0.462">
+        app:layout_constraintVertical_bias="0.462"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="175dp"
             android:layout_height="175dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/eliminate_icon"
             android:src="@drawable/eliminate_icon" />
 
         <TextView
@@ -137,7 +139,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/im_fell_double_pica"
-            android:text="Eliminate"
+            android:text="@string/eliminate"
             android:textColor="#dce24a"
             android:textSize="30sp" />
 
@@ -152,12 +154,14 @@
         android:gravity="center"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="UseCompoundDrawables">
 
         <ImageView
             android:layout_width="175dp"
             android:layout_height="175dp"
             android:layout_gravity="center"
+            android:contentDescription="@string/schedule_icon"
             android:src="@drawable/schedule_icon" />
 
         <TextView
@@ -165,7 +169,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:fontFamily="@font/im_fell_double_pica"
-            android:text="Schedule"
+            android:text="@string/schedule"
             android:textColor="#dce24a"
             android:textSize="30sp" />
 
@@ -179,7 +183,7 @@
         android:fontFamily="@font/lato"
         android:gravity="center"
         android:rotation="270"
-        android:text="Important"
+        android:text="@string/important"
         android:textColor="#F72D1B"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/importantAndUrgent"
@@ -197,7 +201,7 @@
         android:fontFamily="@font/lato"
         android:gravity="center"
         android:rotation="270"
-        android:text="Not Important"
+        android:text="@string/not_important"
         android:textColor="#F72D1B"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/notImportantAndUrgent"
@@ -212,7 +216,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato"
-        android:text="Urgent"
+        android:text="@string/urgent"
         android:textColor="#F72D1B"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/importantAndUrgent"
@@ -227,7 +231,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/lato"
-        android:text="Not Urgent"
+        android:text="@string/not_urgent"
         android:textColor="#F72D1B"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/importantAndNotUrgent"
@@ -238,10 +242,11 @@
 
     <ImageView
         android:id="@+id/question_icon"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="40dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="36dp"
         android:layout_marginBottom="16dp"
+        android:contentDescription="@string/question_icon"
         android:src="@drawable/question_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
