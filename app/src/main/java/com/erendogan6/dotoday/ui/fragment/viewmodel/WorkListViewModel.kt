@@ -1,5 +1,6 @@
 package com.erendogan6.dotoday.ui.fragment.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -45,5 +46,18 @@ import javax.inject.Inject
                 onCompleted()
             }
         }
+    }
+
+    fun calculateCompletionPercentage(workListId: Int): LiveData<Int> {
+        val completionLiveData = MutableLiveData<Int>()
+
+        viewModelScope.launch {
+            val todos = repo.getToDosForWorkList(workListId)
+            val completedTodos = todos.filter { it.isCompleted }
+            val completionPercentage = if (todos.isNotEmpty()) (completedTodos.size * 100 / todos.size) else 0
+            completionLiveData.postValue(completionPercentage)
+        }
+
+        return completionLiveData
     }
 }

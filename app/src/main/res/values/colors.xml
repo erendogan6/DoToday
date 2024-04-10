@@ -7,4 +7,7 @@
     <color name="colorPriorityMedium">#FFEB3B</color>
     <color name="colorPriorityHigh">#F44336</color>
     <color name="cardColor">#E1F5FE</color>
+    <color name="colorRed">#F44336</color>
+    <color name="colorYellow">#FFEB3B</color>
+    <color name="colorGreen">#4CAF50</color>
 </resources>
