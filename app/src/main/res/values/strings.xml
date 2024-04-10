@@ -42,4 +42,5 @@
     <string name="urgent">Urgent</string>
     <string name="not_urgent">Not Urgent</string>
     <string name="question_icon">Question Icon</string>
+    <string name="eisenhower_matris">Eisenhower Matris</string>
 </resources>

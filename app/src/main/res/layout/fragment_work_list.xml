@@ -22,7 +22,8 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="3dp">
+            android:padding="3dp"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="75dp"
@@ -79,7 +80,7 @@
         android:layout_marginBottom="88dp"
         android:backgroundTint="#4FD554"
         android:clickable="true"
-        android:contentDescription="Eisenhower Matris"
+        android:contentDescription="@string/eisenhower_matris"
         android:src="@drawable/grid_icon"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
